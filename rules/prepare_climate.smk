@@ -2,7 +2,8 @@ rule prepare_climate:
     input:
         "results/simulations/{type}/{period}/selected_years.tsv"
     output:
-        "results/simulations/{type}/{period}/{climate}/{climate}_sampled.tsv"
+        "results/simulations/{type}/{period}/{climate}/{climate}_sampled.tsv",
+        "results/simulations/{type}/{period}/{climate}/{climate}_sampled.png"
     log:
         "results/logs/prepare_climate_{type}_{period}_{climate}.log"
     benchmark:
@@ -13,7 +14,8 @@ rule prepare_climate:
     params:
         type="{type}",
         period="{period}",
-        verbose=config["verbose"]
+        climate="{climate}",
+        data_path=config["data_path"]
     script:
         "../scripts/prepare_climate.R"
         

@@ -14,13 +14,14 @@ module load bioinfo/snakemake-5.25.0
 module load system/singularity-3.7.3
 
 # Variables
+DATA="data"
 CONFIG=config/ressources.genologin.yaml
 COMMAND="sbatch --cpus-per-task={cluster.cpus} --time={cluster.time} --mem={cluster.mem} -J {cluster.jobname} -o snake_subjob_log/{cluster.jobname}.%N.%j.out -e snake_subjob_log/{cluster.jobname}.%N.%j.err"
 CORES=100
 mkdir -p snake_subjob_log
 
 # Workflow
-snakemake -s Snakefile --use-singularity -j $CORES --cluster-config $CONFIG --cluster "$COMMAND" --keep-going # maybe --singularity-args "\-\-containall" will be need to avoid conflict with local R env
+snakemake -s Snakefile --use-singularity --singularity-args "\-e \-B $DATA" -j $CORES --cluster-config $CONFIG --cluster "$COMMAND" --keep-going
 
 ## Session informations
 echo '########################################'
