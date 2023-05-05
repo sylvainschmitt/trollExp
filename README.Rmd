@@ -1,5 +1,5 @@
 ---
-title: "smkTemplate - Workflow template"
+title: "trollExp - Run a TROLL experiment"
 author: Sylvain Schmitt
 date: May 5, 2023
 output:
@@ -17,7 +17,7 @@ opts_chunk$set(echo = F, message = F, warning = F, fig.height = 6, fig.width = 8
                cache = F, cache.lazy = F)
 ```
 
-[`singularity` & `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity) workflow template.
+[`singularity` & `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity) workflow to run a TROLL experiment.
 
 ```{r dag, fig.cap="Workflow."}
 knitr::include_graphics("dag/dag.svg")
@@ -55,8 +55,8 @@ cd ${GOPATH}/src/github.com/sylabs/singularity && \
   make && \
   sudo make install
 # detect Mutations
-git clone git@github.com:sylvainschmitt/smkTemplate.git
-cd smkTemplate
+git clone git@github.com:sylvainschmitt/trollExp.git
+cd trollExp
 ```
 
 # Usage
@@ -64,9 +64,9 @@ cd smkTemplate
 ## Locally
 
 ```{bash, eval=F, echo=T}
-snakemake -np -j 1 --resources mem_mb=10000 # dry run
+snakemake -np -j 1 # dry run
 snakemake --dag | dot -Tsvg > dag/dag.svg # dag
-snakemake -j 1 --resources mem_mb=10000 # run
+snakemake -j 1 --use-singularity # run
 ```
 
 ## HPC
@@ -89,8 +89,26 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
-### [rule](https://github.com/sylvainschmitt/smkTemplate/blob/main/rules/rule.smk)
+### [select_years](https://github.com/sylvainschmitt/trollExp/blob/main/rules/select_years.smk)
 
-* Script: [`rule.R`](https://github.com/sylvainschmitt/smkTemplate/blob/main/scripts/rule.R)
+* Script: [`select_years.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/select_years.R)
 
-Dummy example of a rule based on an R script.
+Define years for the warm-up simulations.
+
+### [prepare_climate](https://github.com/sylvainschmitt/trollExp/blob/main/rules/prepare_climate.smk)
+
+* Script: [`prepare_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/prepare_climate.R)
+
+Prepare climate data as a TROLL input for defined years for the warm-up simulations.
+
+### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/main/rules/troll_warm.smk)
+
+* Script: [`troll_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_warm.R)
+
+Run a TROLL warm up simulation before an experiments (e.g. creation of a 600-years old mature forest).
+
+### [troll_exp](https://github.com/sylvainschmitt/trollExp/blob/main/rules/troll_exp.smk)
+
+* Script: [`troll_exp.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_exp.R)
+
+Run a TROLL simulation for an experiments.
