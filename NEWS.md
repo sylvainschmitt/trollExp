@@ -1,3 +1,7 @@
+# trollExp 0.1.0.9003
+
+-   R scripts prepare_climate ok and troll_warm almost but uncovered a segfault to debug
+
 # trollExp 0.1.0.9002
 
 -   R scripts select_years & prepare_climate begins

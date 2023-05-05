@@ -3,12 +3,12 @@ configfile: "config/config_test.yml"
 rule all:
    input:
         # current
-        expand("results/simulations/current/{period}/{climate}/historical/{repetition}",
+        expand("results/simulations/current/{period}/{climate}/historical/R{repetition}",
                  climate=config["current_climate"],
                  period=config["current_period"],
                  repetition=config["current_repetitions"]),
         # projections
-        expand("results/simulations/projections/{period}/{model}_{rcm}/{scenario}/{repetition}",
+        expand("results/simulations/projections/{period}/{model}_{rcm}/{scenario}/R{repetition}",
                  model=config["proj_model"],
                  rcm=config["proj_rcm"],
                  period=config["proj_period"],

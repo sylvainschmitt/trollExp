@@ -1,1 +1,21 @@
-key: "value"
+# current
+current_climate: [
+  "guyaflux", 
+  "era",
+  "MPI-M-MPI-ESM-MR_ICTP-RegCM4-7"
+  ]
+current_period: "10-years"
+current_repetitions: 1
+
+# projections
+proj_model: ["MPI-M-MPI-ESM-MR"]
+proj_rcm: ["ICTP-RegCM4-7"]
+proj_scenario: ["historical", "rcp26", "rcp85"]
+proj_period: "full"
+proj_repetitions: 1
+
+# sim pars
+mature_years: 600 # ~12h
+verbose: yes
+data_path: "/home/sschmitt/Documents/data/" # to bind to singularity with `-B`
+seed: 42 # for the random selection of years
