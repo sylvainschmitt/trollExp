@@ -4,6 +4,7 @@ sink(log_file, append = TRUE, type = "message")
 sink(log_file, append = TRUE)
 
 # snakemake vars
+guyaflux <- snakemake@input[[1]]
 fileout <- snakemake@output[[1]]
 figureout <- snakemake@output[[2]]
 type <- as.character(snakemake@params$type)
@@ -23,7 +24,7 @@ seed <- snakemake@params$seed
 
 # libraries
 suppressMessages(library(tidyverse)) 
-suppressMessages(library(datatrollr)) 
+library(vroom)
 
 # folder
 path <- gsub("selected_years.tsv", "", fileout)
@@ -35,12 +36,12 @@ absent <- TRUE
 
 if(period == "10-years") {
   absent <- FALSE
-  data <- get_guyaflux(path = data_path)
+  data <- vroom(guyaflux)
 }
 
 if(period == "full") {
   absent <- FALSE
-  data <- get_cordex(path = data_path, scenario = "historical")
+  stop("Dev.")
 }
 
 if(absent)

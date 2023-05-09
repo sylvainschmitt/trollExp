@@ -1,3 +1,7 @@
+# trollExp 0.1.0.9004
+
+- VPD debug for guyaflux tested to warmup
+
 # trollExp 0.1.0.9003
 
 -   R scripts prepare_climate ok and troll_warm almost but uncovered a segfault to debug

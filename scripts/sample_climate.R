@@ -4,7 +4,8 @@ sink(log_file, append = TRUE, type = "message")
 sink(log_file, append = TRUE)
 
 # snakemake vars
-filein <- snakemake@input[[1]]
+climatefile <- snakemake@input[[1]]
+yearfile <- snakemake@input[[2]]
 fileout <- snakemake@output[[1]]
 figureout <- snakemake@output[[2]]
 type <- as.character(snakemake@params$type)
@@ -23,7 +24,7 @@ data_path <- snakemake@params$data_path
 
 # libraries
 suppressMessages(library(tidyverse)) 
-suppressMessages(library(datatrollr)) 
+library(vroom)
 
 # folder
 path <- gsub(paste0(climate, "_sampled.tsv"), "", fileout)
@@ -31,52 +32,14 @@ if(!dir.exists(path))
   dir.create(path, recursive = TRUE)
 
 # climate
-absent <- TRUE
+data <- vroom::vroom(climatefile)
 
-if(climate == "guyaflux") {
-  absent <- FALSE
-  data <- get_guyaflux(path = data_path)
-}
-
-if(climate == "era") {
-  absent <- FALSE
-  data <- get_era(path = data_path)
-}
-
-if(absent) {
-  test_cordex <- str_split_1(climate, "_")
-  if(length(test_cordex) != 2)
-    stop(paste0("The climate  ", climate, " is not available."))
-  model <- test_cordex[1]
-  rcm <- test_cordex[2]
-  availables <- list.files(file.path(data_path, "cordex", "table"),
-                           pattern = "_historical.formatted.tsv")
-  availables <- gsub("_historical.formatted.tsv", "", availables) %>% 
-    data.frame(file = .) %>% 
-    separate(file, c("model", "rcm"), "_")
-  if(!(model %in% availables$model))
-    stop(paste0("The model  ", model, " is not available for CORDEX data."))
-  if(!(rcm %in% availables$rcm))
-    stop(paste0("The RCM model  ", rcm, 
-                " is not available for CORDEX data and model ", model, " ."))
-  absent <- FALSE
-  data <- get_cordex(model = model, rcm = rcm,
-                     scenario = "historical", path = data_path)
-  data2 <- get_cordex(model = model, rcm = rcm,
-                      scenario = "rcp26", path = data_path)
-  data <- bind_rows(data, data2)
-}
-  
-if(absent)
-    stop(paste0("The climate ", climate, " is not available."))
-
-climate <- read_tsv(filein) %>%
+climate <- read_tsv(yearfile) %>%
   rename(original_year = year) %>% 
   mutate(year = 1:n()) %>% 
   left_join(
     mutate(data, original_year = year(time)),
-    by = "original_year", multiple = "all",
-    relationship = "many-to-many")
+    by = "original_year", multiple = "all")
 
 climate <- climate %>% 
   mutate(

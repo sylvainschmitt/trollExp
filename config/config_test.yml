@@ -15,7 +15,11 @@ proj_period: "full"
 proj_repetitions: 1
 
 # sim pars
-mature_years: 2 # for quick tests
+mature_years: 1
 verbose: yes
-data_path: "/home/sschmitt/Documents/data/" # to bind to singularity with `-B`
+data_path: "data" # to bind to singularity with `-B`
 seed: 42 # for the random selection of years
+
+# tests
+test: true
+test_years: 0.1

@@ -16,7 +16,9 @@ rule troll_exp:
         climate="{climate}",
         exp="{exp}",
         rep="R{rep}",
-        verbose=config["verbose"]
+        verbose=config["verbose"],
+        test=config["test"],
+        test_years=config["test_years"]
     script:
         "../scripts/troll_exp.R"
         

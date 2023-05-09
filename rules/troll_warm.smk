@@ -7,15 +7,17 @@ rule troll_warm:
         "results/logs/troll_warm_{type}_{period}_{climate}_R{rep}.log"
     benchmark:
         "results/benchmarks/troll_warm_{type}_{period}_{climate}_R{rep}.benchmark.txt"
-    singularity: 
-        "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
+    # singularity: 
+    #     "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
     threads: 1
     params:
         type="{type}",
         period="{period}",
         climate="{climate}",
         rep="R{rep}",
-        verbose=config["verbose"]
+        verbose=config["verbose"],
+        test=config["test"],
+        test_years=config["test_years"]
     script:
         "../scripts/troll_warm.R"
         

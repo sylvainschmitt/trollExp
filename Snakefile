@@ -16,7 +16,16 @@ rule all:
                  repetition=config["proj_repetitions"])
                 
 # Rules #
+
+## Prepare climate ##
+include: "rules/prepare_guyaflux.smk"
+include: "rules/prepare_era.smk"
+include: "rules/prepare_cordex.smk"
+
+## Prepare TROLL inputs ##
 include: "rules/select_years.smk"
-include: "rules/prepare_climate.smk"
+include: "rules/sample_climate.smk"
+
+## Run TROLL ##
 include: "rules/troll_warm.smk"
 include: "rules/troll_exp.smk"

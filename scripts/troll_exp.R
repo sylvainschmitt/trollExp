@@ -11,6 +11,8 @@ simulation <- as.character(snakemake@params$simulation)
 mature_years <- as.numeric(snakemake@params$mature_years)
 verbose <- snakemake@params$verbose
 cores <- as.numeric(snakemake@threads)
+test <- snakemake@params$test
+test_years <- snakemake@params$test_years
 
 # test
 # folderout <- "results/simulations/mature/guyaflux"

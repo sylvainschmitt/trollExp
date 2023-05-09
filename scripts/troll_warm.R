@@ -11,9 +11,11 @@ period <- as.character(snakemake@params$period)
 climate <- as.character(snakemake@params$climate)
 rep <- as.character(snakemake@params$rep)
 verbose <- snakemake@params$verbose
+test <- snakemake@params$test
+test_years <- snakemake@params$test_years
 
 # test
-filein <- "results/simulations/current/10-years/MPI-M-MPI-ESM-MR_ICTP-RegCM4-7/MPI-M-MPI-ESM-MR_ICTP-RegCM4-7_sampled.tsv"
+# filein <- "results/simulations/current/10-years/MPI-M-MPI-ESM-MR_ICTP-RegCM4-7/MPI-M-MPI-ESM-MR_ICTP-RegCM4-7_sampled.tsv"
 # folderout <- "results/simulations/current/10-years/era/warmup/1"
 # type <- "current"
 # period <- "10-years"
@@ -41,10 +43,14 @@ clim <- generate_climate(data)
 # summary(clim)
 
 day <- generate_dailyvar(data) %>% 
-  mutate(Snet = ifelse(Snet < 0, 0, Snet)) # weird
+  mutate(Snet = ifelse(Snet < 0, 0, Snet)) %>% # weird
+  mutate(VPD = ifelse(VPD <= 0, 0.0005, VPD)) %>% 
+  mutate(WS = ifelse(WS <= 0, 0.0005, WS))
 # summary(day)
 
 n <- as.numeric(nrow(clim))
+if(test)
+  n <- round(test_years*365)
 
 sim <- troll(
   name = rep,
@@ -59,6 +65,7 @@ sim <- troll(
   overwrite = TRUE
 )
 
-# load_output("2004:2005", "results/simulations/mature/guyaflux/2004:2005/") %>%
-#   rcontroll::autoplot()
+# test <- load_output("R1", 
+#                     "results/simulations/current/10-years/guyaflux/warmup/R1.0/")
+# rcontroll::autoplot(test)
 # Like a charm !!
