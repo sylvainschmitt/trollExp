@@ -33,6 +33,9 @@ if(!dir.exists(path))
 
 # climate
 data <- vroom::vroom(climatefile)
+if("exp" %in% names(data)) # for cordex
+  data <- filter(data, exp != "rcp85") %>% 
+  select(-exp)
 
 climate <- read_tsv(yearfile) %>%
   rename(original_year = year) %>% 

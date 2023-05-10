@@ -15,6 +15,7 @@ module load snakemake
 module load singularity
 
 # Variables
+DATA="data"
 CONFIG=config/ressources.muse.yaml
 COMMAND="sbatch --cpus-per-task={cluster.cpus} --time={cluster.time} --mem={cluster.mem} -J {cluster.jobname} -o snake_subjob_log/{cluster.jobname}.%N.%j.out -e snake_subjob_log/{cluster.jobname}.%N.%j.err --account=agap --partition={cluster.partition}"
 CORES=100

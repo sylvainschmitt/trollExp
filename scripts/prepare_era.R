@@ -7,18 +7,22 @@ sink(log_file, append = TRUE)
 fileout <- snakemake@output[[1]]
 figureout <- snakemake@output[[2]]
 data_path <- snakemake@params$data_path
+cores <- as.numeric(snakemake@threads)
 
 # test
-# data_path <- "data"
+data_path <- "data"
 
 # libraries
 suppressMessages(library(tidyverse)) 
 suppressMessages(library(rcontroll))
 
 # function
-# era <- prepare_era_batch(list.files("paracou_nc", full.names = TRUE))
-# readr::write_tsv(era, "ERA5land_Paracou.tsv")
-
+path <- file.path(data_path, "era", "paracou_nc")
+files <- list.files(path, full.names = TRUE)
+era <- prepare_era_batch(files, cores = cores) %>% 
+  mutate(snet = ifelse(snet <= 0, 1, snet)) %>% 
+  mutate(vpd = ifelse(vpd <= 0, 0.001, vpd)) %>% 
+  mutate(ws = ifelse(ws <= 0, 0.1, ws))
 write_tsv(x = era, file = fileout)
 
 g <- era %>% 

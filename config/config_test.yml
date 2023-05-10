@@ -15,7 +15,7 @@ proj_period: "full"
 proj_repetitions: 1
 
 # sim pars
-mature_years: 1
+mature_years: 600
 verbose: yes
 data_path: "data" # to bind to singularity with `-B`
 seed: 42 # for the random selection of years

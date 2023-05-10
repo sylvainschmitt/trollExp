@@ -1,3 +1,7 @@
+# trollExp 0.1.0.9005
+
+- first full working workflow in test (to scale-up & outputs to add)
+
 # trollExp 0.1.0.9004
 
 - VPD debug for guyaflux tested to warmup

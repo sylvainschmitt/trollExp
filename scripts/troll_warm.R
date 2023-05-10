@@ -6,6 +6,7 @@ sink(log_file, append = TRUE)
 # snakemake vars
 filein <- snakemake@input[[1]]
 folderout <- snakemake@output[[1]]
+figureout <- snakemake@output[[2]]
 type <- as.character(snakemake@params$type)
 period <- as.character(snakemake@params$period)
 climate <- as.character(snakemake@params$climate)
@@ -29,8 +30,8 @@ suppressMessages(library(vroom))
 
 # code
 path <- gsub(rep, "", folderout)
-dir.create(path,
-           recursive = TRUE)
+# dir.create(path,
+#            recursive = TRUE)
 
 data("TROLLv4_species")
 data("TROLLv4_pedology")
@@ -38,15 +39,8 @@ data("TROLLv4_pedology")
 data <- vroom(filein,
               col_types = list(rainfall = "numeric"))
 
-# stop("We seem to have an issue with climate data.")
 clim <- generate_climate(data)
-# summary(clim)
-
-day <- generate_dailyvar(data) %>% 
-  mutate(Snet = ifelse(Snet < 0, 0, Snet)) %>% # weird
-  mutate(VPD = ifelse(VPD <= 0, 0.0005, VPD)) %>% 
-  mutate(WS = ifelse(WS <= 0, 0.0005, WS))
-# summary(day)
+day <- generate_dailyvar(data)
 
 n <- as.numeric(nrow(clim))
 if(test)
@@ -60,12 +54,11 @@ sim <- troll(
   climate = clim,
   daily = day,
   pedology = TROLLv4_pedology,
-  load = FALSE,
+  load = TRUE,
   verbose = verbose,
   overwrite = TRUE
 )
 
-# test <- load_output("R1", 
-#                     "results/simulations/current/10-years/guyaflux/warmup/R1.0/")
-# rcontroll::autoplot(test)
-# Like a charm !!
+g <- rcontroll::autoplot(sim)
+
+ggsave(plot = g, filename = figureout, bg = "white", width = 20, height = 10)

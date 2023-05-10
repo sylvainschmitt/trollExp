@@ -1,6 +1,7 @@
 rule prepare_era:
     output:
-        "results/data/climate/era.tsv"
+        "results/data/climate/era.tsv",
+        "results/data/climate/era.png"
     log:
         "results/logs/prepare_era.log"
     benchmark:

@@ -15,11 +15,12 @@ data_path <- snakemake@params$data_path
 seed <- snakemake@params$seed
 
 # test
-# fileout <- "results/simulations/current/10-years/selected_years.tsv"
-# type <- "current"
-# period <- "10-years"
+# fileout <- "results/simulations/projection/full/selected_years.tsv"
+# type <- "projection"
+# period <- "full"
 # verbose <- TRUE
-# data_path <- "/home/sschmitt/Documents/data/"
+# mature_years <- 1
+# data_path <- "data"
 # seed <- 42
 
 # libraries
@@ -28,8 +29,8 @@ library(vroom)
 
 # folder
 path <- gsub("selected_years.tsv", "", fileout)
-if(!dir.exists(path))
-  dir.create(path, recursive = TRUE)
+# if(!dir.exists(path))
+#   dir.create(path, recursive = TRUE)
 
 # period
 absent <- TRUE
@@ -37,17 +38,17 @@ absent <- TRUE
 if(period == "10-years") {
   absent <- FALSE
   data <- vroom(guyaflux)
+  years <- unique(year(data$time))
 }
 
 if(period == "full") {
   absent <- FALSE
-  stop("Dev.")
+  years <- 1970:2005 # hardcoded assuming this is the case for all cordex
 }
 
 if(absent)
   stop(paste0("The period ", period, " was not programmed."))
 
-years <- unique(year(data$time))
 if(mature_years > length(years))
   sampled_years <- sample(years, mature_years, replace = TRUE)
 if(mature_years <= length(years))

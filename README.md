@@ -8,6 +8,12 @@ May 5, 2023
   - <a href="#locally" id="toc-locally">Locally</a>
   - <a href="#hpc" id="toc-hpc">HPC</a>
 - <a href="#workflow" id="toc-workflow">Workflow</a>
+  - <a href="#climate" id="toc-climate">Climate</a>
+  - <a href="#troll-inputs" id="toc-troll-inputs">TROLL inputs</a>
+  - <a href="#run-troll" id="toc-run-troll">Run TROLL</a>
+- <a href="#singularity" id="toc-singularity">Singularity</a>
+- <a href="#data" id="toc-data">Data</a>
+  - <a href="#climate-1" id="toc-climate-1">Climate</a>
 
 [`singularity` &
 `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity)
@@ -58,7 +64,7 @@ cd trollExp
 ``` bash
 snakemake -np -j 1 # dry run
 snakemake --dag | dot -Tsvg > dag/dag.svg # dag
-snakemake -j 1 --use-singularity # run
+snakemake -j 1 --use-singularity --singularity-args "\-e \-B data" # run
 ```
 
 ## HPC
@@ -81,6 +87,32 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
+## Climate
+
+### [prepare_guyaflux](https://github.com/sylvainschmitt/trollExp/blob/main/rules/prepare_guyaflux.smk)
+
+- Script:
+  [`prepare_guyaflux.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/prepare_guyaflux.R)
+
+Prepare guyaflux data at a half-hourly time step.
+
+### [prepare_era](https://github.com/sylvainschmitt/trollExp/blob/main/rules/prepare_era.smk)
+
+- Script:
+  [`prepare_era.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/prepare_era.R)
+
+Prepare ERA5-Land data at a half-hourly time step.
+
+### [prepare_cordex](https://github.com/sylvainschmitt/trollExp/blob/main/rules/prepare_cordex.smk)
+
+- Script:
+  [`prepare_cordex.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/prepare_cordex.R)
+
+Prepare South-America (SAM) CORDEX data for a given model and regional
+climate model (RCM) at a half-hourly time step.
+
+## TROLL inputs
+
 ### [select_years](https://github.com/sylvainschmitt/trollExp/blob/main/rules/select_years.smk)
 
 - Script:
@@ -88,13 +120,15 @@ sbatch job_genologin.sh # run
 
 Define years for the warm-up simulations.
 
-### [prepare_climate](https://github.com/sylvainschmitt/trollExp/blob/main/rules/prepare_climate.smk)
+### [sample_climate](https://github.com/sylvainschmitt/trollExp/blob/main/rules/sample_climate.smk)
 
 - Script:
-  [`prepare_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/prepare_climate.R)
+  [`sample_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/sample_climate.R)
 
 Prepare climate data as a TROLL input for defined years for the warm-up
 simulations.
+
+## Run TROLL
 
 ### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/main/rules/troll_warm.smk)
 
@@ -110,3 +144,40 @@ Run a TROLL warm up simulation before an experiments (e.g. creation of a
   [`troll_exp.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_exp.R)
 
 Run a TROLL simulation for an experiments.
+
+# Singularity
+
+The whole workflow currently rely on the [`singularity-troll`
+image](https://github.com/sylvainschmitt/singularity-troll).
+
+# Data
+
+## Climate
+
+#### **Guyaflux**
+
+- Paracou Eddy Flux tower data (Bonal et al. 2008)
+- Access on request
+- 2004 to 2022
+- VPD from relative humidity
+
+#### **ERA5-Land**
+
+- A global reanalysis dataset (Munoz-Sabater et al. 2021)
+- Access from Copernicus eased by
+  [`rcontroll`](https://sylvainschmitt.github.io/rcontroll/articles/climate.html)
+- Currently 2004 to 2022 (can go 1950)
+- VPD from dew point
+  (<https://github.com/sylvainschmitt/rcontroll/blob/TROLLV4/vignettes/climate.Rmd>)
+
+#### **CORDEX**
+
+- A Coordinated Regional Climate Downscaling Experiment for South
+  America
+- Access from IPGSL node eased by [`getCordex`
+  workflow](https://github.com/sylvainschmitt/getCordex).
+- Historical from 1950 to 2006, RCP from 2006 to 2100
+- VPD from relative humidity
+- Currently available models: MPI-M-MPI-ESM-MR
+- Currently available RCM: ICTP-RegCM4-7
+- Currently available scenario: historical, RCP 2.6 and RCP 8.5

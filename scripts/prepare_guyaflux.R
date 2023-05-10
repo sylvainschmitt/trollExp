@@ -79,7 +79,10 @@ years <- c(
 )
 
 guyaflux_filled <- lapply(years, clim_gapfill, guyaflux) %>%
-  bind_rows()
+  bind_rows() %>% 
+  mutate(snet = ifelse(snet <= 0, 1, snet)) %>% 
+  mutate(vpd = ifelse(vpd <= 0, 0.001, vpd)) %>% 
+  mutate(ws = ifelse(ws <= 0, 0.1, ws))
 
 write_tsv(x = guyaflux_filled, file = fileout)
 
