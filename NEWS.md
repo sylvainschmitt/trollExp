@@ -1,3 +1,7 @@
+# trollExp 0.1.0.9006
+
+- local image test
+
 # trollExp 0.1.0.9005
 
 - first full working workflow in test (to scale-up & outputs to add)

@@ -6,7 +6,8 @@ rule prepare_era:
         "results/logs/prepare_era.log"
     benchmark:
         "results/benchmarks/prepare_era.benchmark.txt"
-    # singularity: 
+    singularity: 
+        "singularity/troll.sif"
     #     "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
     threads: 1
     params:

@@ -66,7 +66,8 @@ cd trollExp
 ```{bash, eval=F, echo=T}
 snakemake -np -j 1 # dry run
 snakemake --dag | dot -Tsvg > dag/dag.svg # dag
-snakemake -j 1 --use-singularity --singularity-args "\-e \-B data" # run
+data="/home/sschmitt/Documents/trollExp/data"
+snakemake -j 20 --use-singularity --singularity-args "\-e \-B $data" # run
 ```
 
 ## HPC
@@ -160,6 +161,8 @@ The whole workflow currently rely on the [`singularity-troll` image](https://git
 * Currently 2004 to 2022 (can go 1950)
 * VPD from dew point
 
+> Note: Adjustement to Guyaflux for realism?
+
 #### **CORDEX**
 
 * A Coordinated Regional Climate Downscaling Experiment for South America 
@@ -169,3 +172,5 @@ The whole workflow currently rely on the [`singularity-troll` image](https://git
 * Currently available models: MPI-M-MPI-ESM-MR
 * Currently available RCM: ICTP-RegCM4-7
 * Currently available scenario: historical, RCP 2.6 and RCP 8.5
+
+> Note: Adjustement to Guyaflux for realism?

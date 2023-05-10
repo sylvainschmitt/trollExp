@@ -64,7 +64,8 @@ cd trollExp
 ``` bash
 snakemake -np -j 1 # dry run
 snakemake --dag | dot -Tsvg > dag/dag.svg # dag
-snakemake -j 1 --use-singularity --singularity-args "\-e \-B data" # run
+data="/home/sschmitt/Documents/trollExp/data"
+snakemake -j 20 --use-singularity --singularity-args "\-e \-B $data" # run
 ```
 
 ## HPC
@@ -168,7 +169,8 @@ image](https://github.com/sylvainschmitt/singularity-troll).
   [`rcontroll`](https://sylvainschmitt.github.io/rcontroll/articles/climate.html)
 - Currently 2004 to 2022 (can go 1950)
 - VPD from dew point
-  (<https://github.com/sylvainschmitt/rcontroll/blob/TROLLV4/vignettes/climate.Rmd>)
+
+> Note: Adjustement to Guyaflux for realism?
 
 #### **CORDEX**
 
@@ -181,3 +183,5 @@ image](https://github.com/sylvainschmitt/singularity-troll).
 - Currently available models: MPI-M-MPI-ESM-MR
 - Currently available RCM: ICTP-RegCM4-7
 - Currently available scenario: historical, RCP 2.6 and RCP 8.5
+
+> Note: Adjustement to Guyaflux for realism?

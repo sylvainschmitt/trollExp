@@ -8,7 +8,8 @@ rule troll_warm:
         "results/logs/troll_warm_{type}_{period}_{climate}_R{rep}.log"
     benchmark:
         "results/benchmarks/troll_warm_{type}_{period}_{climate}_R{rep}.benchmark.txt"
-    # singularity: 
+    singularity: 
+        "singularity/troll.sif"
     #     "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
     threads: 1
     params:

@@ -10,7 +10,8 @@ rule troll_exp:
     benchmark:
         "results/benchmarks/troll_exp_{type}_{period}_{climate}_{exp}_R{rep}.benchmark.txt"
     singularity: 
-        "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
+        "singularity/troll.sif"
+    #     "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
     threads: 1
     params:
         type="{type}",
