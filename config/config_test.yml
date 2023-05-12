@@ -22,4 +22,4 @@ seed: 42 # for the random selection of years
 
 # tests
 test: true
-test_years: 0.1
+test_years: 10

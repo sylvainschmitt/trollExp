@@ -11,6 +11,7 @@ May 5, 2023
   - <a href="#climate" id="toc-climate">Climate</a>
   - <a href="#troll-inputs" id="toc-troll-inputs">TROLL inputs</a>
   - <a href="#run-troll" id="toc-run-troll">Run TROLL</a>
+  - <a href="#troll-outputs" id="toc-troll-outputs">TROLL outputs</a>
 - <a href="#singularity" id="toc-singularity">Singularity</a>
 - <a href="#data" id="toc-data">Data</a>
   - <a href="#climate-1" id="toc-climate-1">Climate</a>
@@ -145,6 +146,10 @@ Run a TROLL warm up simulation before an experiments (e.g. creation of a
   [`troll_exp.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_exp.R)
 
 Run a TROLL simulation for an experiments.
+
+## TROLL outputs
+
+### Structure
 
 # Singularity
 

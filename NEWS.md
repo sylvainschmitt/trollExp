@@ -1,3 +1,9 @@
+# trollExp 0.1.0.9007
+
+- local image test with bug fix
+- adding gather rule to gather results in few tables
+- see todo for next devs
+
 # trollExp 0.1.0.9006
 
 - local image test

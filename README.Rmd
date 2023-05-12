@@ -139,6 +139,10 @@ Run a TROLL warm up simulation before an experiments (e.g. creation of a 600-yea
 
 Run a TROLL simulation for an experiments.
 
+## TROLL outputs
+
+### Structure
+
 # Singularity
 
 The whole workflow currently rely on the [`singularity-troll` image](https://github.com/sylvainschmitt/singularity-troll).

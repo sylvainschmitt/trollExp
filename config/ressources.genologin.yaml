@@ -35,13 +35,13 @@ sample_climate:
   time: "01:00:00"
 
 troll_warm:
-  jobname: "sample_climate"
+  jobname: "troll_warm"
   mem: "10G"
   cpus: 1
   time: "96:00:00"
   
 troll_exp:
-  jobname: "sample_climate"
+  jobname: "troll_exp"
   mem: "10G"
   cpus: 1
   time: "96:00:00"
