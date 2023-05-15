@@ -1,5 +1,5 @@
 ---
-title: "trollExp - Run a TROLL experiment"
+title: "trollExp - Run a TROLL experiment with climate"
 author: Sylvain Schmitt
 date: May 5, 2023
 output:
@@ -17,7 +17,7 @@ opts_chunk$set(echo = F, message = F, warning = F, fig.height = 6, fig.width = 8
                cache = F, cache.lazy = F)
 ```
 
-[`singularity` & `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity) workflow to run a TROLL experiment.
+[`singularity` & `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity) workflow to run a TROLL experiment with climate.
 
 ```{r dag, fig.cap="Workflow."}
 knitr::include_graphics("dag/dag.svg")

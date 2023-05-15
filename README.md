@@ -1,4 +1,4 @@
-trollExp - Run a TROLL experiment
+trollExp - Run a TROLL experiment with climate
 ================
 Sylvain Schmitt
 May 5, 2023
@@ -18,7 +18,7 @@ May 5, 2023
 
 [`singularity` &
 `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity)
-workflow to run a TROLL experiment.
+workflow to run a TROLL experiment with climate.
 
 ![Workflow.](dag/dag.svg)
 
