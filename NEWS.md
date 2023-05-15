@@ -1,3 +1,7 @@
+# trollExp 0.1.0.9008
+
+- formatting climate near-zero values for TROLL
+
 # trollExp 0.1.0.9007
 
 - local image test with bug fix

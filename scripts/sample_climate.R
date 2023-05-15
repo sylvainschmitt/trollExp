@@ -66,6 +66,11 @@ climate <- climate %>%
   ))) %>% select(-original_year, -year, -month, -day,
                  -hour, -minute)
 
+climate <- climate %>% 
+  mutate(vpd = ifelse(vpd <= 0.01, 0.01, vpd)) %>% 
+  mutate(snet = ifelse(snet <= 1, 1, snet)) %>% 
+  mutate(ws = ifelse(ws <= 0.1, 0.1, ws))
+
 write_tsv(x = climate, file = fileout)
 
 g <- climate %>% 
