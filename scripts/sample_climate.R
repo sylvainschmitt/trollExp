@@ -52,6 +52,13 @@ climate <- climate %>%
     hour = hour(time),
     minute = minute(time)
     ) %>% 
+  mutate(
+    monthday = paste0(sprintf("%02d", month),
+                      "-", 
+                      sprintf("%02d", day))
+  ) %>% 
+  filter(monthday != "02-29") %>% 
+  select(-monthday) %>% 
   mutate(time = as_datetime(paste0(
     sprintf("%04d", year), 
     "-", 
