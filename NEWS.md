@@ -1,3 +1,7 @@
+# trollExp 0.1.0.9010
+
+- splitting individual exp in branches and stating objectives in main
+
 # trollExp 0.1.0.9009
 
 - removing 02/29 from bisextile years

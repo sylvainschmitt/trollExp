@@ -15,10 +15,21 @@ May 5, 2023
 - <a href="#singularity" id="toc-singularity">Singularity</a>
 - <a href="#data" id="toc-data">Data</a>
   - <a href="#climate-1" id="toc-climate-1">Climate</a>
+  - <a href="#diversity" id="toc-diversity">Diversity</a>
+  - <a href="#logging" id="toc-logging">Logging</a>
+  - <a href="#soil" id="toc-soil">Soil</a>
 
 [`singularity` &
 `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity)
 workflow to run a TROLL experiment.
+
+**WARNING, In development.**
+
+For the moment the main branch host and old version of the climate
+branch to run a TROLL experiment with climate. In total 4 branches for 4
+types of experiments should be developed: climate, diversity, logging,
+and soil. And finally the main branch should host a full experiment from
+the four branches (with maybe an intermediary dev branch).
 
 ![Workflow.](dag/dag.svg)
 
@@ -149,12 +160,29 @@ Run a TROLL simulation for an experiments.
 
 ## TROLL outputs
 
-### Structure
+### [gather_repetition](https://github.com/sylvainschmitt/trollExp/blob/main/rules/gather_repetition.smk)
+
+- Script:
+  [`gather_repetition.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/gather_repetition.R)
+
+Gather outputs of different repetitions for a given type of experiment,
+period, and climate.
+
+### [gather_period](https://github.com/sylvainschmitt/trollExp/blob/main/rules/gather_period.smk)
+
+- Script:
+  [`gather_period.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/gather_period.R)
+
+Gather outputs of different climates for a given type of experiment and
+period.
 
 # Singularity
 
 The whole workflow currently rely on the [`singularity-troll`
-image](https://github.com/sylvainschmitt/singularity-troll).
+image](https://github.com/sylvainschmitt/singularity-troll). The
+[`singularity-LoggingLab`
+image](https://github.com/sylvainschmitt/singularity-LoggingLab) might
+be used for logging simulations.
 
 # Data
 
@@ -190,3 +218,31 @@ image](https://github.com/sylvainschmitt/singularity-troll).
 - Currently available scenario: historical, RCP 2.6 and RCP 8.5
 
 > Note: Adjustement to Guyaflux for realism?
+
+## Diversity
+
+*In development.*
+
+## Logging
+
+*In development.*
+
+## Soil
+
+#### **SoilGrids**
+
+250x250m soil information for the globe with quantified spatial
+uncertainty ([Poggio et
+al. 2021](https://soil.copernicus.org/articles/7/217/2021/)). Available
+[online](https://files.isric.org/soilgrids/latest/data/) with an example
+[R
+script](https://git.wur.nl/isric/soilgrids/soilgrids.notebooks/-/blob/master/markdown/webdav_from_R.md).
+We will use following variables for TROLL:
+
+- silt: proportion of silt
+- clay: proportion of clay
+- sand: proportion of sand
+- soc: soil organic content
+- bdod: dry bulk density
+- phh20: hydrogen ion activity in water  
+- cec: cation exchange capacity at ph 7
