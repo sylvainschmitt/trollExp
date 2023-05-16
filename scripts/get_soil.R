@@ -25,7 +25,6 @@ library(tidyverse)
 library(terra)
 library(gdalUtilities)
 library(osmdata)
-library(leaflet)
 library(sf)
 
 # url

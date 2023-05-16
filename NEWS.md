@@ -1,4 +1,8 @@
-# trollExp 0.1.0.9010
+# trollExp  - soil 0.1.0.9011
+
+- sccrap SoilGrids data
+
+# trollExp  - soil 0.1.0.9010
 
 - init soil exp
 

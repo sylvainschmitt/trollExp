@@ -1,20 +1,17 @@
 trollExp - Run a TROLL experiment with soil
 ================
 Sylvain Schmitt
-May 5, 2023
+May 16, 2023
 
 - <a href="#installation" id="toc-installation">Installation</a>
 - <a href="#usage" id="toc-usage">Usage</a>
   - <a href="#locally" id="toc-locally">Locally</a>
   - <a href="#hpc" id="toc-hpc">HPC</a>
 - <a href="#workflow" id="toc-workflow">Workflow</a>
-  - <a href="#climate" id="toc-climate">Climate</a>
-  - <a href="#troll-inputs" id="toc-troll-inputs">TROLL inputs</a>
-  - <a href="#run-troll" id="toc-run-troll">Run TROLL</a>
-  - <a href="#troll-outputs" id="toc-troll-outputs">TROLL outputs</a>
+  - <a href="#soil" id="toc-soil">Soil</a>
 - <a href="#singularity" id="toc-singularity">Singularity</a>
 - <a href="#data" id="toc-data">Data</a>
-  - <a href="#climate-1" id="toc-climate-1">Climate</a>
+  - <a href="#soil-1" id="toc-soil-1">Soil</a>
 
 [`singularity` &
 `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity)
@@ -56,6 +53,7 @@ cd ${GOPATH}/src/github.com/sylabs/singularity && \
 # detect Mutations
 git clone git@github.com:sylvainschmitt/trollExp.git
 cd trollExp
+git checkout soil
 ```
 
 # Usage
@@ -65,8 +63,7 @@ cd trollExp
 ``` bash
 snakemake -np -j 1 # dry run
 snakemake --dag | dot -Tsvg > dag/dag.svg # dag
-data="/home/sschmitt/Documents/trollExp/data"
-snakemake -j 20 --use-singularity --singularity-args "\-e \-B $data" # run
+snakemake -j 20 --use-singularity --singularity-args "\-e" # run
 ```
 
 ## HPC
@@ -89,104 +86,56 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
-## Climate
+## Soil
 
-### [prepare_guyaflux](https://github.com/sylvainschmitt/trollExp/blob/main/rules/prepare_guyaflux.smk)
-
-- Script:
-  [`prepare_guyaflux.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/prepare_guyaflux.R)
-
-Prepare guyaflux data at a half-hourly time step.
-
-### [prepare_era](https://github.com/sylvainschmitt/trollExp/blob/main/rules/prepare_era.smk)
+### [get_soil](https://github.com/sylvainschmitt/trollExp/blob/main/rules/get_soil.smk)
 
 - Script:
-  [`prepare_era.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/prepare_era.R)
+  [`get_soil.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/get_soilx.R)
 
-Prepare ERA5-Land data at a half-hourly time step.
+Download SoildGrids data for a given variable and depth.
 
-### [prepare_cordex](https://github.com/sylvainschmitt/trollExp/blob/main/rules/prepare_cordex.smk)
-
-- Script:
-  [`prepare_cordex.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/prepare_cordex.R)
-
-Prepare South-America (SAM) CORDEX data for a given model and regional
-climate model (RCM) at a half-hourly time step.
-
-## TROLL inputs
-
-### [select_years](https://github.com/sylvainschmitt/trollExp/blob/main/rules/select_years.smk)
+### [extract_soil](https://github.com/sylvainschmitt/trollExp/blob/main/rules/extract_soil.smk)
 
 - Script:
-  [`select_years.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/select_years.R)
+  [`extract_soil.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/extract_soil.R)
 
-Define years for the warm-up simulations.
+Extract soil data for given addresses.
 
-### [sample_climate](https://github.com/sylvainschmitt/trollExp/blob/main/rules/sample_climate.smk)
-
-- Script:
-  [`sample_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/sample_climate.R)
-
-Prepare climate data as a TROLL input for defined years for the warm-up
-simulations.
-
-## Run TROLL
-
-### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/main/rules/troll_warm.smk)
-
-- Script:
-  [`troll_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_warm.R)
-
-Run a TROLL warm up simulation before an experiments (e.g. creation of a
-600-years old mature forest).
-
-### [troll_exp](https://github.com/sylvainschmitt/trollExp/blob/main/rules/troll_exp.smk)
-
-- Script:
-  [`troll_exp.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_exp.R)
-
-Run a TROLL simulation for an experiments.
-
-## TROLL outputs
-
-### Structure
+<!-- ## Run TROLL -->
+<!-- ### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/main/rules/troll_warm.smk) -->
+<!-- * Script: [`troll_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_warm.R) -->
+<!-- Run a TROLL warm up simulation before an experiments (e.g. creation of a 600-years old mature forest). -->
+<!-- ### [troll_exp](https://github.com/sylvainschmitt/trollExp/blob/main/rules/troll_exp.smk) -->
+<!-- * Script: [`troll_exp.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_exp.R) -->
+<!-- Run a TROLL simulation for an experiments. -->
 
 # Singularity
 
 The whole workflow currently rely on the [`singularity-troll`
 image](https://github.com/sylvainschmitt/singularity-troll).
 
+> Need to add: gdalUtilities, sf, osmdata, nominatimlite, corrplot,
+> ggtern
+
 # Data
 
-## Climate
+## Soil
 
-#### **Guyaflux**
+#### **SoilGrids**
 
-- Paracou Eddy Flux tower data (Bonal et al. 2008)
-- Access on request
-- 2004 to 2022
-- VPD from relative humidity
+250x250m soil information for the globe with quantified spatial
+uncertainty ([Poggio et
+al. 2021](https://soil.copernicus.org/articles/7/217/2021/)). Available
+[online](https://files.isric.org/soilgrids/latest/data/) with an example
+[R
+script](https://git.wur.nl/isric/soilgrids/soilgrids.notebooks/-/blob/master/markdown/webdav_from_R.md).
+We will use following variables for TROLL:
 
-#### **ERA5-Land**
-
-- A global reanalysis dataset (Munoz-Sabater et al. 2021)
-- Access from Copernicus eased by
-  [`rcontroll`](https://sylvainschmitt.github.io/rcontroll/articles/climate.html)
-- Currently 2004 to 2022 (can go 1950)
-- VPD from dew point
-
-> Note: Adjustement to Guyaflux for realism?
-
-#### **CORDEX**
-
-- A Coordinated Regional Climate Downscaling Experiment for South
-  America
-- Access from IPGSL node eased by [`getCordex`
-  workflow](https://github.com/sylvainschmitt/getCordex).
-- Historical from 1950 to 2006, RCP from 2006 to 2100
-- VPD from relative humidity
-- Currently available models: MPI-M-MPI-ESM-MR
-- Currently available RCM: ICTP-RegCM4-7
-- Currently available scenario: historical, RCP 2.6 and RCP 8.5
-
-> Note: Adjustement to Guyaflux for realism?
+- silt: proportion of silt
+- clay: proportion of clay
+- sand: proportion of sand
+- soc: soil organic content
+- bdod: dry bulk density
+- phh20: hydrogen ion activity in water  
+- cec: cation exchange capacity at ph 7

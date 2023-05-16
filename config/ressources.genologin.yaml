@@ -4,45 +4,15 @@ __default__:
   cpus: 1
   time: "48:00:00"
   
-prepare_guyaflux:
-  jobname: "prepare_guyaflux"
+get_soil:
+  jobname: "get_soil"
   mem: "10G"
   cpus: 1
   time: "01:00:00"
 
-prepare_era:
-  jobname: "prepare_era"
-  mem: "10G"
-  cpus: 10
-  time: "01:00:00"
-
-prepare_cordex:
-  jobname: "prepare_guyaflux"
+extract_soil:
+  jobname: "extract_soil"
   mem: "10G"
   cpus: 1
   time: "01:00:00"
-  
-select_years:
-  jobname: "select_years"
-  mem: "10G"
-  cpus: 1
-  time: "01:00:00"
-
-sample_climate:
-  jobname: "sample_climate"
-  mem: "10G"
-  cpus: 1
-  time: "01:00:00"
-
-troll_warm:
-  jobname: "troll_warm"
-  mem: "10G"
-  cpus: 1
-  time: "96:00:00"
-  
-troll_exp:
-  jobname: "troll_exp"
-  mem: "10G"
-  cpus: 1
-  time: "96:00:00"
   

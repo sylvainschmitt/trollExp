@@ -1,12 +1,9 @@
-configfile: "config/config_test.yml"
+configfile: "config/config.yml"
 
 rule all:
    input:
-        # expand("results/soil/rasters/{par}_{depth}.tif",
-        #          par=config["soil_pars"],
-        #          depth=config["depth"])
-        expand("results/soil/tables/soil_{depth}.tsv",
-                 depth=config["depth"])
+        expand("results/soil/soil_{area}.tsv",
+                 area=config["area"])
                  
 # Rules #
 

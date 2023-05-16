@@ -1,9 +1,9 @@
 # plots
 area: "French Guiana"
 plots: [
-  "5.267241344232334, -52.92436802555797",
-   "Réserve naturelle des nouragues, 97301, Régina"
-   ] # add a white sand spot for tests
+   "Piste de Paracou",
+   "Réserve naturelle des nouragues",
+   ]
 
 # soil
 soil_pars: [
@@ -22,9 +22,9 @@ soil_pars: [
 # bdod: dry bulk density
 # phh20: hydrogen ion activity in water  
 # cec: cation exchange capacity at ph 7
-depth: "0-5cm"
-# "0-5cm", "5-15cm", "15-30", "30-60", "60-100"
-# develop with multiple depth aggregated afterwhile
+depth: [
+  "0-5cm"
+  ]
 
 # singularity
 troll: "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.3/sylvainschmitt-singularity-troll.latest.sif"

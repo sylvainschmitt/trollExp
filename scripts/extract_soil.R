@@ -1,7 +1,3 @@
-# refs
-# code from https://git.wur.nl/isric/soilgrids/soilgrids.notebooks/-/blob/master/markdown/webdav_from_R.md
-# data description at https://maps.isric.org
-
 # snakemake log
 log_file <- file(snakemake@log[[1]], open = "wt")
 sink(log_file, append = TRUE, type = "message")
@@ -10,17 +6,33 @@ sink(log_file, append = TRUE)
 # snakemake vars
 filesin <- snakemake@input
 fileout <- snakemake@output[[1]]
-figureout <- snakemake@output[[2]]
+figure_plot <- snakemake@output[[2]]
+figure_cor <- snakemake@output[[3]]
+figure_tern <- snakemake@output[[4]]
 plots <- as.character(snakemake@params$plots)
+
+
+# test
+# filesin <- c(
+#   "results/soil/rasters/silt_0-5cm.tif",
+#   "results/soil/rasters/silt_5-15cm.tif",
+#   "results/soil/rasters/clay_0-5cm.tif",
+#   "results/soil/rasters/clay_5-15cm.tif",
+#   "results/soil/rasters/sand_0-5cm.tif",
+#   "results/soil/rasters/sand_5-15cm.tif"
+# )
+# plots <- c(
+#   "5.267241344232334, -52.92436802555797",
+#   "Réserve naturelle des nouragues, 97301, Régina"
+# )
 
 # libs
 library(tidyverse)
 library(terra)
-library(gdalUtilities)
-library(osmdata)
-library(leaflet)
 library(sf)
 library(nominatimlite)
+library(corrplot)
+library(ggtern)
 
 # rasters
 layers <- filesin %>% 
@@ -35,21 +47,52 @@ plots <- data.frame(plots = plots) %>%
   st_transform(crs = crs(layers))
 
 # extract
-res <- terra::extract(layers, plots, bind = TRUE)
+res <- terra::extract(layers, plots, bind = TRUE) %>% 
+  as.data.frame() %>% 
+  select(-query) %>% 
+  separate(address, "address", ",") %>% 
+  gather(variable, value, -address) %>% 
+  separate(variable, c("variable", "depth"), "_")
 
 # save
-write_tsv(as.data.frame(res), fileout)
+write_tsv(res, fileout)
 
 # plot
-g <- as.data.frame(res) %>% 
-  select(-query) %>% 
-  gather(variable, value, -address) %>% 
-  separate(address, "address", ",") %>% 
-  ggplot(aes(address, value, fill = address)) +
+g_plots <- res %>%
+  mutate(address = gsub(" ", "\n", address)) %>% 
+  ggplot(aes(address, value, fill = depth)) +
   geom_col(position = "dodge") +
   theme_bw() +
   facet_wrap(~ variable, scales = "free") +
-  theme(legend.position = "bottom", axis.title = element_blank(),
-        axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  theme(legend.position = "bottom", axis.title = element_blank()) +
+  scale_fill_viridis_d() +
+  coord_flip()
 
-ggsave(g, filename = figureout)
+ggsave(g_plots, filename = figure_plot)
+
+png(figure_cor)
+layers %>% 
+  as.data.frame() %>% 
+  select(contains("0-5cm")) %>% 
+  cor(use = "pairwise.complete.obs") %>% 
+  corrplot.mixed(tl.pos	= "lt")
+dev.off()
+
+g_tern <- res %>% 
+  filter(variable %in% c("sand", "clay", "silt")) %>% 
+  pivot_wider(names_from = variable, values_from = value) %>% 
+  ggplot(aes(x = sand, y = clay, z = silt, 
+             shape = address, col = depth)) +
+  ggtern::coord_tern(L = "x", T = "y", R = "z") +
+  geom_point(size = 3) +
+  theme_bw() +
+  scale_color_viridis_d() +
+  labs(
+    yarrow = "Clay (%)",
+    zarrow = "Silt (%)",
+    xarrow = "Sand (%)"
+  ) +
+  ggtern::theme_showarrows() +
+  ggtern::theme_hidetitles()+
+  ggtern::theme_clockwise()
+ggsave(g_tern, filename = figure_tern)
