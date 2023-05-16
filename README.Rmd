@@ -94,63 +94,63 @@ sbatch job_genologin.sh # run
 
 ## Climate
 
-### [prepare_guyaflux](https://github.com/sylvainschmitt/trollExp/blob/main/rules/prepare_guyaflux.smk)
+### [prepare_guyaflux](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_guyaflux.smk)
 
-* Script: [`prepare_guyaflux.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/prepare_guyaflux.R)
+* Script: [`prepare_guyaflux.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_guyaflux.R)
 
 Prepare guyaflux data at a half-hourly time step.
 
-### [prepare_era](https://github.com/sylvainschmitt/trollExp/blob/main/rules/prepare_era.smk)
+### [prepare_era](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_era.smk)
 
-* Script: [`prepare_era.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/prepare_era.R)
+* Script: [`prepare_era.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_era.R)
 
 Prepare ERA5-Land data at a half-hourly time step.
 
-### [prepare_cordex](https://github.com/sylvainschmitt/trollExp/blob/main/rules/prepare_cordex.smk)
+### [prepare_cordex](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_cordex.smk)
 
-* Script: [`prepare_cordex.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/prepare_cordex.R)
+* Script: [`prepare_cordex.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_cordex.R)
 
 Prepare South-America (SAM) CORDEX data for a given model and regional climate model (RCM) at a half-hourly time step.
 
 ## TROLL inputs
 
-### [select_years](https://github.com/sylvainschmitt/trollExp/blob/main/rules/select_years.smk)
+### [select_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/select_years.smk)
 
-* Script: [`select_years.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/select_years.R)
+* Script: [`select_years.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/select_years.R)
 
 Define years for the warm-up simulations.
 
-### [sample_climate](https://github.com/sylvainschmitt/trollExp/blob/main/rules/sample_climate.smk)
+### [sample_climate](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/sample_climate.smk)
 
-* Script: [`sample_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/sample_climate.R)
+* Script: [`sample_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/sample_climate.R)
 
 Prepare climate data as a TROLL input for defined years for the warm-up simulations.
 
 ## Run TROLL
 
-### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/main/rules/troll_warm.smk)
+### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/troll_warm.smk)
 
-* Script: [`troll_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_warm.R)
+* Script: [`troll_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/troll_warm.R)
 
 Run a TROLL warm up simulation before an experiments (e.g. creation of a 600-years old mature forest).
 
-### [troll_exp](https://github.com/sylvainschmitt/trollExp/blob/main/rules/troll_exp.smk)
+### [troll_exp](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/troll_exp.smk)
 
-* Script: [`troll_exp.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_exp.R)
+* Script: [`troll_exp.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/troll_exp.R)
 
 Run a TROLL simulation for an experiments.
 
 ## TROLL outputs
 
-### [gather_repetition](https://github.com/sylvainschmitt/trollExp/blob/main/rules/gather_repetition.smk)
+### [gather_repetition](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/gather_repetition.smk)
 
-* Script: [`gather_repetition.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/gather_repetition.R)
+* Script: [`gather_repetition.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/gather_repetition.R)
 
 Gather outputs of different repetitions for a given type of experiment, period, and climate.
 
-### [gather_period](https://github.com/sylvainschmitt/trollExp/blob/main/rules/gather_period.smk)
+### [gather_period](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/gather_period.smk)
 
-* Script: [`gather_period.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/gather_period.R)
+* Script: [`gather_period.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/gather_period.R)
 
 Gather outputs of different climates for a given type of experiment and period.
 
