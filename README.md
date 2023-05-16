@@ -56,6 +56,7 @@ cd ${GOPATH}/src/github.com/sylabs/singularity && \
 # detect Mutations
 git clone git@github.com:sylvainschmitt/trollExp.git
 cd trollExp
+git checkout climate
 ```
 
 # Usage
@@ -149,7 +150,21 @@ Run a TROLL simulation for an experiments.
 
 ## TROLL outputs
 
-### Structure
+### [gather_repetition](https://github.com/sylvainschmitt/trollExp/blob/main/rules/gather_repetition.smk)
+
+- Script:
+  [`gather_repetition.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/gather_repetition.R)
+
+Gather outputs of different repetitions for a given type of experiment,
+period, and climate.
+
+### [gather_period](https://github.com/sylvainschmitt/trollExp/blob/main/rules/gather_period.smk)
+
+- Script:
+  [`gather_period.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/gather_period.R)
+
+Gather outputs of different climates for a given type of experiment and
+period.
 
 # Singularity
 

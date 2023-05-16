@@ -1,3 +1,7 @@
+# trollExp - climate 0.1.0.9010
+
+- updating readme & todo
+
 # trollExp 0.1.0.9009
 
 - removing 02/29 from bisextile years
