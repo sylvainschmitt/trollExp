@@ -88,26 +88,26 @@ sbatch job_genologin.sh # run
 
 ## Soil
 
-### [get_soil](https://github.com/sylvainschmitt/trollExp/blob/main/rules/get_soil.smk)
+### [get_soil](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/get_soil.smk)
 
 - Script:
-  [`get_soil.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/get_soilx.R)
+  [`get_soil.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/get_soilx.R)
 
 Download SoildGrids data for a given variable and depth.
 
-### [extract_soil](https://github.com/sylvainschmitt/trollExp/blob/main/rules/extract_soil.smk)
+### [extract_soil](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/extract_soil.smk)
 
 - Script:
-  [`extract_soil.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/extract_soil.R)
+  [`extract_soil.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/extract_soil.R)
 
 Extract soil data for given addresses.
 
 <!-- ## Run TROLL -->
-<!-- ### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/main/rules/troll_warm.smk) -->
-<!-- * Script: [`troll_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_warm.R) -->
+<!-- ### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/troll_warm.smk) -->
+<!-- * Script: [`troll_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/troll_warm.R) -->
 <!-- Run a TROLL warm up simulation before an experiments (e.g. creation of a 600-years old mature forest). -->
-<!-- ### [troll_exp](https://github.com/sylvainschmitt/trollExp/blob/main/rules/troll_exp.smk) -->
-<!-- * Script: [`troll_exp.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/troll_exp.R) -->
+<!-- ### [troll_exp](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/troll_exp.smk) -->
+<!-- * Script: [`troll_exp.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/troll_exp.R) -->
 <!-- Run a TROLL simulation for an experiments. -->
 
 # Singularity
