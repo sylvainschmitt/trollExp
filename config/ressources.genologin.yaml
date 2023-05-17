@@ -15,4 +15,16 @@ extract_soil:
   mem: "10G"
   cpus: 1
   time: "01:00:00"
+
+troll_warm:
+  jobname: "troll_warm"
+  mem: "10G"
+  cpus: 1
+  time: "96:00:00"
+
+gather_warm.R:
+  jobname: "gather_warm.R"
+  mem: "10G"
+  cpus: 1
+  time: "01:00:00"
   

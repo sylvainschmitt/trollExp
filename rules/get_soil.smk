@@ -6,7 +6,7 @@ rule get_soil:
         "results/logs/get_soil_{par}_{depth}.log"
     benchmark:
         "results/benchmarks/get_soil_{par}_{depth}.benchmark.txt"
-    # singularity: 
+    # singularity:
     #     config["troll"]
     threads: 1
     params:

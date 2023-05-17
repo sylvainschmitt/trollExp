@@ -2,7 +2,7 @@
 area: "French Guiana"
 plots: [
    "Piste de Paracou",
-   "Réserve naturelle des nouragues",
+   "Réserve naturelle des Nouragues",
    "Saint-Elie, Guyane"
    ]
 
@@ -16,7 +16,7 @@ soil_pars: [
   "phh2o",
   "cec"
   ]
-depth: [
+soil_depth: [
   "0-5cm",
   "5-15cm",
   "15-30cm",
@@ -24,5 +24,26 @@ depth: [
   "60-100cm"
   ]
 
+# exp pars
+exp_plots: [
+   "Paracou",
+   "Nouragues",
+   "Saint-Élie"
+   ]
+exp_depth: [
+  "0-5cm",
+  "all"
+  ]
+n_layers: 5
+layer_thickness: [0.1, 0.23, 0.4, 0.8, 0.97]
+mature_years: 600
+repetitions: 1
+verbose: yes
+
 # singularity
-troll: "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.3/sylvainschmitt-singularity-troll.latest.sif"
+# troll: "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.3/sylvainschmitt-singularity-troll.latest.sif"
+troll: "singularity/troll.sif"
+  
+# tests
+test: true
+test_years: 0.1

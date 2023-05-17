@@ -1,6 +1,10 @@
+# trollExp  - soil 0.1.0.9012
+
+- full pipeline validated in test locally to genologin now
+
 # trollExp  - soil 0.1.0.9011
 
-- sccrap SoilGrids data
+- scrap SoilGrids data
 
 # trollExp  - soil 0.1.0.9010
 

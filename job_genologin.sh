@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --time=96:00:00
-#SBATCH -J trollExp
-#SBATCH -o trollExp.%N.%j.out
-#SBATCH -e trollExp.%N.%j.err
+#SBATCH -J trollSoil
+#SBATCH -o trollSoil.%N.%j.out
+#SBATCH -e trollSoil.%N.%j.err
 #SBATCH --mem=5G
 #SBATCH --cpus-per-task=1
 #SBATCH --mail-type=ALL
@@ -14,7 +14,6 @@ module load bioinfo/snakemake-5.25.0
 module load system/singularity-3.7.3
 
 # Variables
-DATA="/home/sschmitt/work/trollExp/data"
 CONFIG=config/ressources.genologin.yaml
 COMMAND="sbatch --cpus-per-task={cluster.cpus} --time={cluster.time} --mem={cluster.mem} -J {cluster.jobname} -o snake_subjob_log/{cluster.jobname}.%N.%j.out -e snake_subjob_log/{cluster.jobname}.%N.%j.err"
 CORES=100

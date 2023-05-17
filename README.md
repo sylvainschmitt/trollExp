@@ -9,6 +9,8 @@ May 16, 2023
   - <a href="#hpc" id="toc-hpc">HPC</a>
 - <a href="#workflow" id="toc-workflow">Workflow</a>
   - <a href="#soil" id="toc-soil">Soil</a>
+  - <a href="#run-troll" id="toc-run-troll">Run TROLL</a>
+  - <a href="#troll-outputs" id="toc-troll-outputs">TROLL outputs</a>
 - <a href="#singularity" id="toc-singularity">Singularity</a>
 - <a href="#data" id="toc-data">Data</a>
   - <a href="#soil-1" id="toc-soil-1">Soil</a>
@@ -63,7 +65,7 @@ git checkout soil
 ``` bash
 snakemake -np -j 1 # dry run
 snakemake --dag | dot -Tsvg > dag/dag.svg # dag
-snakemake -j 20 --use-singularity --singularity-args "\-e" # run
+snakemake -j 1 --use-singularity --singularity-args "\-e" # run
 ```
 
 ## HPC
@@ -102,21 +104,31 @@ Download SoildGrids data for a given variable and depth.
 
 Extract soil data for given addresses.
 
-<!-- ## Run TROLL -->
-<!-- ### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/troll_warm.smk) -->
-<!-- * Script: [`troll_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/troll_warm.R) -->
-<!-- Run a TROLL warm up simulation before an experiments (e.g. creation of a 600-years old mature forest). -->
-<!-- ### [troll_exp](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/troll_exp.smk) -->
-<!-- * Script: [`troll_exp.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/troll_exp.R) -->
-<!-- Run a TROLL simulation for an experiments. -->
+## Run TROLL
+
+### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/troll_warm.smk)
+
+- Script:
+  [`troll_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/troll_warm.R)
+
+Run a TROLL warm up simulation (e.g. creation of a 600-years old mature
+forest).
+
+## TROLL outputs
+
+### [gather_warm](https://github.com/sylvainschmitt/trollExp/blob/main/rules/gather_warm.smk)
+
+- Script:
+  [`gather_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/gather_warm.R)
+
+Gather outputs of all experiments.
 
 # Singularity
 
 The whole workflow currently rely on the [`singularity-troll`
 image](https://github.com/sylvainschmitt/singularity-troll).
 
-> Need to add: gdalUtilities, sf, osmdata, nominatimlite, corrplot,
-> ggtern
+> need to add tidyterra, ggtern
 
 # Data
 

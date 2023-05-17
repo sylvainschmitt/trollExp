@@ -1,17 +1,17 @@
 rule extract_soil:
     input:
         expand("results/soil/rasters/{par}_{depth}.tif", 
-                par=config["soil_pars"], depth=config["depth"])
+                par=config["soil_pars"], depth=config["soil_depth"])
     output:
-        "results/soil/soil_{area}.tsv",
-        "results/soil/soil_{area}_all.png",
-        "results/soil/soil_{area}_cor.png",
-        "results/soil/soil_{area}_tern.png"
+        "results/soil/soil.tsv",
+        "results/soil/soil_all.png",
+        "results/soil/soil_cor.png",
+        "results/soil/soil_tern.png"
     log:
-        "results/logs/extract_soil_{area}.log"
+        "results/logs/extract_soil.log"
     benchmark:
-        "results/benchmarks/extract_soil_{area}.benchmark.txt"
-    # singularity: 
+        "results/benchmarks/extract_soil.benchmark.txt"
+    # singularity:
     #     config["troll"]
     threads: 1
     params:
