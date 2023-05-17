@@ -9,9 +9,8 @@ rule sample_climate:
         "results/logs/sample_climate_{type}_{period}_{climate}.log"
     benchmark:
         "results/benchmarks/sample_climate_{type}_{period}_{climate}.benchmark.txt"
-    singularity: 
-        "singularity/troll.sif"
-    #     "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
+    singularity:
+        config["troll"]
     threads: 1
     params:
         type="{type}",

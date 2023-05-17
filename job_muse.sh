@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --time=24:00:00
-#SBATCH -J trollExp
-#SBATCH -o trollExp.%N.%j.out
-#SBATCH -e trollExp.%N.%j.err
+#SBATCH -J trollClim
+#SBATCH -o trollClim.%N.%j.out
+#SBATCH -e trollClim.%N.%j.err
 #SBATCH --mem=1G
 #SBATCH --cpus-per-task=1
 #SBATCH --mail-type=ALL

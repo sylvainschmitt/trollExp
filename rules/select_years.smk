@@ -8,9 +8,8 @@ rule select_years:
         "results/logs/select_years_{type}_{period}.log"
     benchmark:
         "results/benchmarks/select_years_{type}_{period}.benchmark.txt"
-    singularity: 
-        "singularity/troll.sif"
-    #     "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
+    singularity:
+        config["troll"]
     threads: 1
     params:
         type="{type}",

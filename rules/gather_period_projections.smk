@@ -17,9 +17,8 @@ rule gather_period_projections:
         "results/logs/gather_period_projections_{period}.log"
     benchmark:
         "results/benchmarks/gather_period_projections_{period}.benchmark.txt"
-    singularity: 
-       "singularity/troll.sif"
-    #   "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
+    singularity:
+        config["troll"]
     threads: 1
     params:
         type="projections",

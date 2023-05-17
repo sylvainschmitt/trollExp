@@ -13,9 +13,8 @@ rule gather_repetition_projections:
         "results/logs/gather_repetition_projections_{period}_{climate}_R{rep}.log"
     benchmark:
         "results/benchmarks/gather_repetition_projections_{period}_{climate}_R{rep}.benchmark.txt"
-    singularity: 
-       "singularity/troll.sif"
-    #   "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
+    singularity:
+        config["troll"]
     threads: 1
     params:
         type="projections",

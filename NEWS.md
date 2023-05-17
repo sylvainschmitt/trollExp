@@ -1,3 +1,7 @@
+# trollExp - climate 0.1.0.9011
+
+- fixing singularity image and adding a pointer in config
+
 # trollExp - climate 0.1.0.9010
 
 - updating readme & todo

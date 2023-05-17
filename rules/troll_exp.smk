@@ -9,9 +9,8 @@ rule troll_exp:
         "results/logs/troll_exp_{type}_{period}_{climate}_{exp}_R{rep}.log"
     benchmark:
         "results/benchmarks/troll_exp_{type}_{period}_{climate}_{exp}_R{rep}.benchmark.txt"
-    singularity: 
-       "singularity/troll.sif"
-    #   "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
+    singularity:
+        config["troll"]
     threads: 1
     params:
         type="{type}",

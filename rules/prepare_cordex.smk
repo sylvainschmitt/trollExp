@@ -6,9 +6,8 @@ rule prepare_cordex:
         "results/logs/prepare_cordex_{model}_{rcm}.log"
     benchmark:
         "results/benchmarks/prepare_cordex_{model}_{rcm}.benchmark.txt"
-    singularity: 
-        "singularity/troll.sif"
-    #     "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.2/sylvainschmitt-singularity-troll.latest.sif"
+    singularity:
+        config["troll"]
     threads: 1
     params:
         model="{model}",
