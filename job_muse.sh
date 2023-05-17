@@ -22,7 +22,7 @@ CORES=100
 mkdir -p snake_subjob_log
 
 # Workflow
-snakemake -s Snakefile --use-singularity --singularity-args "\-e \-B $DATA" -j $CORES --cluster-config $CONFIG --cluster "$COMMAND" --keep-going
+snakemake -s Snakefile --use-singularity --singularity-args "\-e" -j $CORES --cluster-config $CONFIG --cluster "$COMMAND" --keep-going
 
 ## Session informations
 echo '########################################'

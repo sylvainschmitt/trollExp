@@ -121,7 +121,7 @@ if(depth != "all") {
            CEC = CEC/100)
 }
 
-n <- as.numeric(mature_years)
+n <- as.numeric(mature_years)*365
 if(test)
   n <- round(test_years*365)
 
