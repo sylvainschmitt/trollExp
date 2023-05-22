@@ -2,8 +2,8 @@ rule troll_warm:
     input:
         "results/soil/soil.tsv"
     output:
-        directory("results/simulations/{plot}_{depth}/R{rep}"),
-        "results/simulations/{plot}_{depth}/R{rep}.png"
+        directory("results/simulations/{plot}_{depth}/R{rep}")
+        # "results/simulations/{plot}_{depth}/R{rep}.png"
     log:
         "results/logs/troll_warm_{plot}_{depth}_R{rep}.log"
     benchmark:

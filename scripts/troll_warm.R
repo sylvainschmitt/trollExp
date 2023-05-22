@@ -6,7 +6,7 @@ sink(log_file, append = TRUE)
 # snakemake vars
 filein <- snakemake@input[[1]]
 folderout <- snakemake@output[[1]]
-figureout <- snakemake@output[[2]]
+# figureout <- snakemake@output[[2]]
 plot <- as.character(snakemake@params$plot)
 depth <- as.character(snakemake@params$depth)
 rep <- as.character(snakemake@params$rep)
@@ -133,11 +133,11 @@ sim <- troll(
   climate = TROLLv4_climate,
   daily = TROLLv4_dailyvar,
   pedology = pedo,
-  load = TRUE,
+  load = FALSE,
   verbose = verbose,
   overwrite = TRUE
 )
 
-g <- rcontroll::autoplot(sim)
-
-ggsave(plot = g, filename = figureout, bg = "white", width = 20, height = 10)
+# g <- rcontroll::autoplot(sim)
+# 
+# ggsave(plot = g, filename = figureout, bg = "white", width = 20, height = 10)

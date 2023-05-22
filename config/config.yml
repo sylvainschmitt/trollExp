@@ -45,5 +45,5 @@ verbose: yes
 troll: "singularity/troll.sif"
   
 # tests
-test: true
+test: false
 test_years: 0.1
