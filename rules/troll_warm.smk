@@ -2,8 +2,8 @@ rule troll_warm:
     input:
         "results/simulations/{type}/{period}/{climate}/{climate}_sampled.tsv"
     output:
-        directory("results/simulations/{type}/{period}/{climate}/warmup/R{rep}"),
-        "results/simulations/{type}/{period}/{climate}/warmup/R{rep}.png"
+        directory("results/simulations/{type}/{period}/{climate}/warmup/R{rep}")
+        # "results/simulations/{type}/{period}/{climate}/warmup/R{rep}.png"
     log:
         "results/logs/troll_warm_{type}_{period}_{climate}_R{rep}.log"
     benchmark:

@@ -7,7 +7,7 @@ sink(log_file, append = TRUE)
 filein <- snakemake@input[[1]]
 folderin <- snakemake@input[[2]]
 folderout <- snakemake@output[[1]]
-figureout <- snakemake@output[[2]]
+# figureout <- snakemake@output[[2]]
 type <- as.character(snakemake@params$type)
 period <- as.character(snakemake@params$period)
 climate <- as.character(snakemake@params$climate)
@@ -76,11 +76,11 @@ sim <- troll(
   pedology = pedo_pars,
   forest = forest_pars,
   soil = soil_pars,
-  load = TRUE,
+  load = FALSE,
   verbose = verbose,
   overwrite = TRUE
 )
 
-g <- rcontroll::autoplot(sim)
-
-ggsave(plot = g, filename = figureout, bg = "white", width = 20, height = 10)
+# g <- rcontroll::autoplot(sim)
+# 
+# ggsave(plot = g, filename = figureout, bg = "white", width = 20, height = 10)

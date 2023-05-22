@@ -67,8 +67,8 @@ git checkout climate
 ```{bash, eval=F, echo=T}
 snakemake -np -j 1 # dry run
 snakemake --dag | dot -Tsvg > dag/dag.svg # dag
-data="/home/sschmitt/Documents/trollExp/data"
-snakemake -j 20 --use-singularity --singularity-args "\-e \-B $data" # run
+data="/home/sschmitt/Documents/trollExp_climate/data"
+snakemake -j 1 --use-singularity --singularity-args "\-e \-B $data" # run
 ```
 
 ## HPC

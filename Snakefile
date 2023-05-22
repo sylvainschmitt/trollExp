@@ -1,4 +1,4 @@
-configfile: "config/config_test.yml"
+configfile: "config/config.yml"
 
 ruleorder: troll_warm > troll_exp
 
