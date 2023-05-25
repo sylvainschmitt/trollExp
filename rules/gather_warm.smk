@@ -7,10 +7,10 @@ rule gather_warm:
     output:
         trajectory_file="results/simulations/trajectory.tsv",
         species_file="results/simulations/species.tsv",
-        forest_file="results/simulations/forest.tsv",
-        trajectory_plot="results/simulations/trajectory.png",
-        species_plot="results/simulations/species.png",
-        forest_plot="results/simulations/forest.png"
+        forest_file="results/simulations/forest.tsv"
+        # trajectory_plot="results/simulations/trajectory.png",
+        # species_plot="results/simulations/species.png",
+        # forest_plot="results/simulations/forest.png"
     log:
         "results/logs/gather_warm.log"
     benchmark:

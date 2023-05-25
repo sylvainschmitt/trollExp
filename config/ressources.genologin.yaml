@@ -24,7 +24,7 @@ troll_warm:
 
 gather_warm.R:
   jobname: "gather_warm.R"
-  mem: "10G"
+  mem: "100G"
   cpus: 1
   time: "01:00:00"
   

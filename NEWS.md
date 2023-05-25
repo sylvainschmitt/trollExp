@@ -1,3 +1,7 @@
+# trollExp  - soil 0.1.0.9013
+
+- rm fig for ram issue
+
 # trollExp  - soil 0.1.0.9012
 
 - full pipeline validated in test locally to genologin now
