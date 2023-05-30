@@ -9,10 +9,10 @@ rule gather_period_current:
     output:
         trajectory_file="results/tables/period/current_{period}_trajectory.tsv",
         species_file="results/tables/period/current_{period}_species.tsv",
-        forest_file="results/tables/period/current_{period}_forest.tsv",
-        trajectory_plot="results/figures/period/current_{period}_trajectory.png",
-        species_plot="results/figures/period/current_{period}_species.png",
-        forest_plot="results/figures/period/current_{period}_forest.png"
+        forest_file="results/tables/period/current_{period}_forest.tsv"
+        # trajectory_plot="results/figures/period/current_{period}_trajectory.png",
+        # species_plot="results/figures/period/current_{period}_species.png",
+        # forest_plot="results/figures/period/current_{period}_forest.png"
     log:
         "results/logs/gather_period_current_{period}.log"
     benchmark:

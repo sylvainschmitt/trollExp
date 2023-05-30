@@ -1,3 +1,7 @@
+# trollExp - climate 0.1.0.9012
+
+- fixed trollExp_climate nbiter and with cordex data
+
 # trollExp - climate 0.1.0.9011
 
 - fixing singularity image and adding a pointer in config

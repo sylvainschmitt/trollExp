@@ -5,10 +5,10 @@ rule gather_repetition_current:
     output:
         trajectory_file="results/tables/repetitions/current_{period}/{climate}_R{rep}_trajectory.tsv",
         species_file="results/tables/repetitions/current_{period}/{climate}_R{rep}_species.tsv",
-        forest_file="results/tables/repetitions/current_{period}/{climate}_R{rep}_forest.tsv",
-        trajectory_plot="results/figures/repetitions/current_{period}/{climate}_R{rep}_trajectory.png",
-        species_plot="results/figures/repetitions/current_{period}/{climate}_R{rep}_species.png",
-        forest_plot="results/figures/repetitions/current_{period}/{climate}_R{rep}_forest.png"
+        forest_file="results/tables/repetitions/current_{period}/{climate}_R{rep}_forest.tsv"
+        # trajectory_plot="results/figures/repetitions/current_{period}/{climate}_R{rep}_trajectory.png",
+        # species_plot="results/figures/repetitions/current_{period}/{climate}_R{rep}_species.png",
+        # forest_plot="results/figures/repetitions/current_{period}/{climate}_R{rep}_forest.png"
     log:
         "results/logs/gather_repetition_current_{period}_{climate}_R{rep}.log"
     benchmark:

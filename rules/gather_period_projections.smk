@@ -9,10 +9,10 @@ rule gather_period_projections:
     output:
         trajectory_file="results/tables/period/projections_{period}_trajectory.tsv",
         species_file="results/tables/period/projections_{period}_species.tsv",
-        forest_file="results/tables/period/projections_{period}_forest.tsv",
-        trajectory_plot="results/figures/period/projections_{period}_trajectory.png",
-        species_plot="results/figures/period/projections_{period}_species.png",
-        forest_plot="results/figures/period/projections_{period}_forest.png"
+        forest_file="results/tables/period/projections_{period}_forest.tsv"
+        # trajectory_plot="results/figures/period/projections_{period}_trajectory.png",
+        # species_plot="results/figures/period/projections_{period}_species.png",
+        # forest_plot="results/figures/period/projections_{period}_forest.png"
     log:
         "results/logs/gather_period_projections_{period}.log"
     benchmark:
