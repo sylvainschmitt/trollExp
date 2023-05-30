@@ -35,7 +35,7 @@ suppressMessages(library(rcontroll))
 suppressMessages(library(vroom)) 
 
 # code
-# path <- gsub(rep, "", folderout)
+path <- gsub(rep, "", folderout)
 # dir.create(path,
 #            recursive = TRUE)
 
@@ -65,8 +65,6 @@ forest_pars <- vroom(file.path(folderin, paste0(rep, "_0_final_pattern.txt"))) %
 soil_pars <- vroom(file.path(folderin, paste0(rep, "_0_final_SWC3D.txt")), 
                    col_names = F) %>% 
   as.data.frame()
-
-str(forest_pars)
 
 sim <- troll(
   name = rep,
