@@ -4,59 +4,48 @@ sink(log_file, append = TRUE, type = "message")
 sink(log_file, append = TRUE)
 
 # snakemake vars
-guyaflux <- snakemake@input[[1]]
+filein <- snakemake@input[[1]]
 fileout <- snakemake@output[[1]]
 figureout <- snakemake@output[[2]]
-type <- as.character(snakemake@params$type)
-period <- as.character(snakemake@params$period)
-mature_years <- as.numeric(snakemake@params$mature_years)
-verbose <- snakemake@params$verbose
-data_path <- snakemake@params$data_path
+warmup <- as.numeric(snakemake@params$warmup)
 seed <- snakemake@params$seed
 
 # test
-# fileout <- "results/simulations/projection/full/selected_years.tsv"
-# type <- "projection"
-# period <- "full"
-# verbose <- TRUE
-# mature_years <- 1
-# data_path <- "data"
+# filein <- "results/data/climate/cordex.tsv"
+# mature_years <- 600
 # seed <- 42
 
 # libraries
-suppressMessages(library(tidyverse)) 
+library(tidyverse)
 library(vroom)
+library(patchwork)
 
-# folder
-path <- gsub("selected_years.tsv", "", fileout)
-# if(!dir.exists(path))
-#   dir.create(path, recursive = TRUE)
-
-# period
-absent <- TRUE
-
-if(period == "10-years") {
-  absent <- FALSE
-  data <- vroom(guyaflux)
-  years <- unique(year(data$time))
-}
-
-if(period == "full") {
-  absent <- FALSE
-  years <- 1970:2005 # hardcoded assuming this is the case for all cordex
-}
-
-if(absent)
-  stop(paste0("The period ", period, " was not programmed."))
-
-if(mature_years > length(years))
-  sampled_years <- sample(years, mature_years, replace = TRUE)
-if(mature_years <= length(years))
-  sampled_years <- sample(years, mature_years, replace = FALSE)
-
-years <- data.frame(year = sampled_years)
-write_tsv(years, fileout)
-g <- ggplot(years, aes(year)) +
+# code
+set.seed(seed)
+climate <- vroom(filein) %>% 
+  filter(experiment == "historical")
+years <- 1970:2005
+if(warmup > length(years))
+  sampled_years <- sample(years, warmup, replace = TRUE)
+if(warmup <= length(years))
+  sampled_years <- sample(years, warmup, replace = FALSE)
+sampled_years <- data.frame(year = sampled_years)
+write_tsv(sampled_years, fileout)
+g <- ggplot(sampled_years, aes(year)) +
   geom_histogram() +
   theme_bw()
+g1 <- sampled_years %>% 
+  mutate(sim_year = 1:n()) %>% 
+  ggplot(aes(sim_year, year)) +
+  geom_density_2d_filled(show.legend = FALSE) +
+  geom_point() +
+  theme_bw() +
+  xlab("warmup year") +
+  ylab("real year")
+g2 <- ggplot(sampled_years, aes(year)) +
+  geom_histogram(col = NA) +
+  theme_bw() +
+  coord_flip() +
+  xlab("real year")
+g <- g1 + g2
 ggsave(plot = g, filename = figureout, bg = "white")

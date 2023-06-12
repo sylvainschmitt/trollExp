@@ -1,3 +1,7 @@
+# trollExp - climate 0.1.0.9013
+
+- Pre-use of ERA5-Land for seasonality in projs
+
 # trollExp - climate 0.1.0.9012
 
 - fixed trollExp_climate nbiter and with cordex data

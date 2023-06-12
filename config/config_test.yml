@@ -1,21 +1,11 @@
-# current
-current_climate: [
-  "guyaflux", 
-  "era",
-  "MPI-M-MPI-ESM_ICTP-RegCM4-7"
-  ]
-current_period: "10-years"
-current_repetitions: 1
-
-# projections
-proj_model: ["MPI-M-MPI-ESM"]
-proj_rcm: ["ICTP-RegCM4-7"]
-proj_scenario: ["historical", "rcp26", "rcp85"]
-proj_period: "full"
-proj_repetitions: 1
+# data
+model: ["MOHC-HadGEM2-ES", "MPI-M-MPI-ESM", "NCC-NorESM1-M"]
+rcm: ["ICTP-RegCM4-7", "REMO2015"]
+scenario: ["rcp26", "rcp85"]
+repetitions: 1
 
 # sim pars
-mature_years: 600
+warmup: 600
 verbose: yes
 data_path: "data" # to bind to singularity with `-B`
 seed: 42 # for the random selection of years

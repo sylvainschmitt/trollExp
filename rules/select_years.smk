@@ -1,22 +1,18 @@
 rule select_years:
     input:
-        "results/data/climate/guyaflux.tsv"
+        "results/data/climate/cordex.tsv"
     output:
-        "results/simulations/{type}/{period}/selected_years.tsv",
-        "results/simulations/{type}/{period}/selected_years.png"
+        "results/data/climate/selected_years.tsv",
+        "results/data/climate/selected_years.png"
     log:
-        "results/logs/select_years_{type}_{period}.log"
+        "results/logs/select_years.log"
     benchmark:
-        "results/benchmarks/select_years_{type}_{period}.benchmark.txt"
+        "results/benchmarks/select_years.benchmark.txt"
     singularity:
         config["troll"]
     threads: 1
     params:
-        type="{type}",
-        period="{period}",
-        mature_years=config["mature_years"],
-        data_path=config["data_path"],
+        warmup=config["warmup"],
         seed=config["seed"]
     script:
         "../scripts/select_years.R"
-        
