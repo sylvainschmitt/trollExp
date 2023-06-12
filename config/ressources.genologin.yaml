@@ -4,44 +4,38 @@ __default__:
   cpus: 1
   time: "48:00:00"
   
-prepare_guyaflux:
-  jobname: "prepare_guyaflux"
-  mem: "10G"
-  cpus: 1
-  time: "01:00:00"
-
-prepare_era:
-  jobname: "prepare_era"
-  mem: "10G"
-  cpus: 10
-  time: "01:00:00"
-
 prepare_cordex:
-  jobname: "prepare_guyaflux"
-  mem: "10G"
-  cpus: 1
-  time: "01:00:00"
-  
-select_years:
-  jobname: "select_years"
+  jobname: "prepare_cordex"
   mem: "10G"
   cpus: 1
   time: "01:00:00"
 
-sample_climate:
-  jobname: "sample_climate"
-  mem: "10G"
+projection_years:
+  jobname: "projection_years"
+  mem: "4"
   cpus: 1
   time: "01:00:00"
 
-troll_warm:
-  jobname: "troll_warm"
+prepare_projection:
+  jobname: "prepare_projection"
   mem: "10G"
   cpus: 1
-  time: "96:00:00"
+  time: "01:00:00"
   
-troll_exp:
-  jobname: "troll_exp"
+spinup_years:
+  jobname: "spinup_years"
+  mem: "4"
+  cpus: 1
+  time: "01:00:00"
+
+prepare_climate:
+  jobname: "prepare_climate"
+  mem: "10G"
+  cpus: 1
+  time: "01:00:00"
+  
+troll:
+  jobname: "troll"
   mem: "10G"
   cpus: 1
   time: "96:00:00"

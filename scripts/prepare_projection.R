@@ -4,19 +4,22 @@ sink(log_file, append = TRUE, type = "message")
 sink(log_file, append = TRUE)
 
 # snakemake vars
-cordex_path <- snakemake@input[["cordex"]]
-era_path <- snakemake@input[["era"]]
+climate_file <- snakemake@input[["cordex"]]
+era_file <- snakemake@input[["era"]]
+years_file <- snakemake@input[["years"]]
 fileout <- snakemake@output[["tab"]]
 figureout <- snakemake@output[["fig"]]
-data_path <- snakemake@params$data_path
 model <- as.character(snakemake@params$model)
 rcm <- as.character(snakemake@params$rcm)
+exp <- as.character(snakemake@params$exp)
 
 # test
-# cordex_path <- "data/cordex"
-# era_path <- "data/ERA5land_Paracou.tsv"
+# climate_file <- "results/climate/cordex_adjusted/NCC-NorESM1-M_REMO2015.tsv"
+# era_file <- "data/ERA5land_Paracou.tsv"
+# years_file <- "results/climate/projection_years.tsv"
 # model <- "NCC-NorESM1-M"
 # rcm <- "REMO2015"
+# exp <- "rcp85"
 
 # libraries
 library(tidyverse)
@@ -124,31 +127,35 @@ summarise_year <- function(data)
 # code
 m <- model
 r <- rcm
+e <- exp
 
-era <- vroom(era_path) %>% 
+sampled_years <- vroom(years_file)
+era <- vroom(era_file) %>% 
   mutate(experiment = "historical", 
          model = "ERA5-Land",
          rcm = "")
+cordex_adj <- vroom(climate_file)
 
-cordex <- data.frame(path = cordex_path,
-                     file = list.files(cordex_path, 
-                                       pattern = "formatted.tsv")) %>% 
-  mutate(type = gsub(".formatted.tsv", "", file)) %>% 
-  separate(type, c("model", "rcm", "experiment"), "_") %>% 
-  rowwise() %>% 
-  filter(model == m, rcm == r) %>% 
-  mutate(climate = list(vroom(file.path(path, file),
-                              col_types = c("rainfall" = "numeric")))) %>% 
-  unnest(cols = c(climate)) %>% 
-  select(-path, -file)
+era_sampled <- sampled_years %>% 
+  left_join(mutate(era, era_year = year(time)),
+            multiple = "all",
+            by = join_by(era_year)) %>% 
+  mutate(months_diff = (sim_year - era_year)*12) %>% 
+  mutate(time = time %m+% months(months_diff)) %>% 
+  select(-months_diff)
 
-cordex_adj <- cordex %>% 
-  adjust_table(ref = era)
+era_adj <- split(era_sampled, era_sampled$sim_year) %>% 
+  lapply(function(x) adjust_table(x, 
+                                  ref = cordex_adj,
+                                  exp = e,
+                                  period = unique(x$sim_year))) %>% 
+  bind_rows()
 
-write_tsv(x = cordex_adj, file = fileout)
+write_tsv(era_adj, fileout)
 
-g <- list(cordex = cordex,
-          "cordex adjusted" = cordex_adj,
+g <- list("cordex adjusted" = filter(cordex_adj, 
+                                     experiment == e),
+          "era adjusted" = select(era_adj, -sim_year, -era_year),
           era = era) %>% 
   lapply(summarise_year) %>% 
   bind_rows(.id = "dataset") %>% 
@@ -159,6 +166,7 @@ g <- list(cordex = cordex,
   facet_wrap(~ variable, scales = "free") +
   theme_bw() +
   theme(legend.position = c(0.8, 0.2), axis.title = element_blank()) +
-  ggtitle(paste(model, rcm, "adjusted"))
+  ggtitle(paste("ERA5-Land", e), 
+          paste("Based on model", m, "with RCM", r))
 
-ggsave(plot = g, filename = figureout, bg = "white", width = 10, height = 5)
+ggsave(plot = g, filename = figureout, bg = "white")

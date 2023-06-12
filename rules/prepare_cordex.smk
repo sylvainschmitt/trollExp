@@ -1,16 +1,20 @@
 rule prepare_cordex:
+    input:
+        cordex=config["cordex"],
+        era=config["era"]
     output:
-        "results/data/climate/cordex.tsv",
-        "results/data/climate/cordex.png"
+        tab="results/climate/cordex_adjusted/{model}_{rcm}.tsv",
+        fig="results/climate/cordex_adjusted/{model}_{rcm}.png"
     log:
-        "results/logs/prepare_cordex.log"
+        "results/logs/prepare_{model}_{rcm}.log"
     benchmark:
-        "results/benchmarks/prepare_cordex.benchmark.txt"
+        "results/benchmarks/prepare_{model}_{rcm}.benchmark.txt"
     singularity:
         config["troll"]
     threads: 1
     params:
-        data_path=config["data_path"]
+        model="{model}",
+        rcm="{rcm}"
     script:
         "../scripts/prepare_cordex.R"
         

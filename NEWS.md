@@ -1,3 +1,7 @@
+# trollExp - climate 0.1.0.9014
+
+- Use ERA5-Land for projections with seasonality
+
 # trollExp - climate 0.1.0.9013
 
 - Pre-use of ERA5-Land for seasonality in projs

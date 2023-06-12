@@ -14,14 +14,13 @@ test <- snakemake@params$test
 test_years <- snakemake@params$test_years
 
 # test
-# filein <- "results/simulations/NCC-NorESM1-M_REMO2015_rcp85_climate.tsv"
-# folderout <- "results/simulations/NCC-NorESM1-M_REMO2015_rcp85"
-# model <- "NCC-NorESM1-M"
-# rcm <- "REMO2015"
-# exp <- "rcp85"
-# verbose <- TRUE
-# test <- TRUE
-# test_years <- 0.1
+filein <- "results/simulations/NCC-NorESM1-M_REMO2015_rcp85_climate.tsv"
+model <- "NCC-NorESM1-M"
+rcm <- "REMO2015"
+exp <- "rcp85"
+verbose <- TRUE
+test <- TRUE
+test_years <- 0.1
 
 # libraries
 library(tidyverse)
@@ -37,9 +36,9 @@ data("TROLLv4_pedology")
 
 data <- vroom(filein,
               col_types = list(rainfall = "numeric")) %>% 
-  mutate(snet = ifelse(snet <= 1, 1.1, snet)) %>% 
-  mutate(vpd = ifelse(vpd <= 0.001, 0.0011, vpd)) %>% 
-  mutate(ws = ifelse(ws <= 0.1, 0.11, ws))
+  mutate(snet = ifelse(snet <= 1.1, 1.1, snet)) %>% 
+  mutate(vpd = ifelse(vpd <= 0.011, 0.011, vpd)) %>% 
+  mutate(ws = ifelse(ws <= 0.11, 0.11, ws))
 
 clim <- generate_climate(data)
 day <- generate_dailyvar(data)

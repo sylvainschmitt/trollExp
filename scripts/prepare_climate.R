@@ -4,105 +4,72 @@ sink(log_file, append = TRUE, type = "message")
 sink(log_file, append = TRUE)
 
 # snakemake vars
-climatefile <- snakemake@input[["climate"]]
-yearfile <- snakemake@input[["years"]]
-fileout <- snakemake@output[[1]]
-figureout <- snakemake@output[[2]]
+era_path <- snakemake@input[["era"]]
+climate_path <- snakemake@input[["climate"]]
+years_path <- snakemake@input[["years"]]
+fileout <- snakemake@output[["tab"]]
+figureout <- snakemake@output[["fig"]]
 model <- as.character(snakemake@params$model)
 rcm <- as.character(snakemake@params$rcm)
 exp <- as.character(snakemake@params$exp)
-warmup <- as.numeric(snakemake@params$warmup)
 
 # test
-# climatefile <- "results/data/climate/MOHC-HadGEM2-ES_REMO2015.tsv"
-# yearfile <- "results/data/climate/selected_years.tsv"
-# model <- "MOHC-HadGEM2-ES"
+# era_path <- "data/ERA5land_Paracou.tsv"
+# climate_path <- "results/climate/projection/NCC-NorESM1-M_REMO2015_rcp85.tsv"
+# years_path <- "results/climate/spinup_years.tsv"
+# model <- "NCC-NorESM1-M"
 # rcm <- "REMO2015"
 # exp <- "rcp85"
-# warmup <- 600
 
 # libraries
 library(tidyverse)
 library(vroom)
 
 # code
-data <- vroom::vroom(climatefile)
+spinup_years <- vroom(years_path)
+era <- vroom(era_path) 
+era_adj <- vroom(climate_path)
 
-## historical
-data_hist <- filter(data, experiment == "historical") %>% 
-  mutate(experiment = "historical") %>% 
-  rename(period = experiment) %>% 
-  filter(paste0(month(time), "-", day(time)) != "02-29") %>% 
-  filter(year(time) %in% 1970:2005) %>% 
-  arrange(time)
+spinup <- spinup_years %>% 
+  left_join(mutate(era, era_year = year(time)),
+            multiple = "all",
+            by = join_by(era_year)) %>% 
+  mutate(months_diff = (sim_year - era_year)*12) %>% 
+  mutate(time = time %m+% months(months_diff)) %>% 
+  select(-months_diff) %>% 
+  mutate(stage = "spinup")
 
-## experiment
-data_exp <- filter(data, experiment == exp) %>% 
-  mutate(experiment = "experiment") %>% 
-  rename(period = experiment) %>% 
-  filter(paste0(month(time), "-", day(time)) != "02-29") %>% 
-  filter(year(time) %in% 2006:2100) %>% 
-  arrange(time)
+historical <- era %>% 
+  mutate(era_year = year(time), sim_year = year(time)) %>% 
+  mutate(stage = "historical")
+  
+projection <- era_adj %>% 
+  select(-experiment, -model, -rcm) %>% 
+  mutate(stage = "projection")
 
-
-rm(data)
-gc()
-
-## warmup
-data_warm <- read_tsv(yearfile) %>%
-  rename(original_year = year) %>% 
-  mutate(year = (1970-warmup):1969) %>% 
-  left_join(
-    mutate(data_hist, original_year = year(time), period = "warmup"),
-    by = "original_year", multiple = "all") %>% 
-  mutate(
-    month = month(time),
-    day = day(time),
-    hour = hour(time),
-    minute = minute(time)
-  ) %>% 
-  mutate(
-    monthday = paste0(sprintf("%02d", month),
-                      "-", 
-                      sprintf("%02d", day))
-  ) %>% 
-  filter(monthday != "02-29") %>% 
-  select(-monthday) %>% 
-  mutate(time = as_datetime(paste0(
-    sprintf("%04d", year), 
-    "-", 
-    sprintf("%02d", month),
-    "-", 
-    sprintf("%02d", day),
-    " ",
-    sprintf("%02d", hour),
-    ":", 
-    sprintf("%02d", minute),
-    ":00" 
-  ))) %>% select(-original_year, -year, -month, -day,
-                 -hour, -minute)
-
-climate <- bind_rows(data_warm, data_hist, data_exp) %>% 
-  arrange(time)
-
-rm(data_warm, data_hist, data_exp)
-gc()
+climate <- bind_rows(spinup, 
+                     historical,
+                     projection) %>% 
+  arrange(time) %>% 
+  filter(paste0(month(time), "-", day(time)) != "02-29")
 
 write_tsv(x = climate, file = fileout)
 
 g <- climate %>%
-  filter(year(time) > 1800) %>% 
-  group_by(period, year = year(time)) %>%
+  select(-era_year, -sim_year) %>% 
+  group_by(stage, year = year(time)) %>%
   select(-time) %>%
   mutate(rainfall = sum(rainfall, na.rm = TRUE)) %>%
   summarise_all(mean, na.rm = TRUE) %>%
-  gather(variable, value, -year, -period) %>%
+  gather(variable, value, -year, -stage) %>%
   ggplot(aes(year, value)) +
   geom_smooth(se = FALSE, col = "black", alpha = 0.5) +
-  geom_line(aes(col = period)) +
+  geom_line(aes(col = stage)) +
   facet_wrap(~ variable, scales = "free_y") +
   theme_bw() +
   xlab("") + ylab("") +
   theme(legend.position = c(0.8, 0.2))
+  ggtitle(paste("ERA5-Land", exp),
+          paste("Based on model", model, "with RCM", rcm))
 
 ggsave(plot = g, filename = figureout, bg = "white", width = 8, height = 5)

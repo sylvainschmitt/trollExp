@@ -1,10 +1,11 @@
 rule prepare_climate:
     input:
-        climate="results/data/climate/{model}_{rcm}.tsv",
-        years="results/data/climate/selected_years.tsv"
+        era=config["era"],
+        climate="results/climate/projection/{model}_{rcm}_{exp}.tsv",
+        years="results/climate/spinup_years.tsv"
     output:
-        "results/simulations/{model}_{rcm}_{exp}_climate.tsv",
-        "results/simulations/{model}_{rcm}_{exp}_climate.png"
+        tab="results/simulations/{model}_{rcm}_{exp}_climate.tsv",
+        fig="results/simulations/{model}_{rcm}_{exp}_climate.png"
     log:
         "results/logs/prepare_climate_{model}_{rcm}_{exp}.log"
     benchmark:
@@ -15,8 +16,7 @@ rule prepare_climate:
     params:
         model="{model}",
         rcm="{rcm}",
-        exp="{exp}",
-        warmup=config["warmup"]
+        exp="{exp}"
     script:
         "../scripts/prepare_climate.R"
         

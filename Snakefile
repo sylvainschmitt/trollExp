@@ -1,4 +1,5 @@
 configfile: "config/config_test.yml"
+# configfile: "config/config.yml"
 
 ruleorder: prepare_climate > troll
 
@@ -13,10 +14,11 @@ rule all:
 
 ## Prepare climate ##
 include: "rules/prepare_cordex.smk"
-include: "rules/prepare_model.smk"
+include: "rules/projection_years.smk"
+include: "rules/prepare_projection.smk"
 
 ## Prepare TROLL inputs ##
-include: "rules/select_years.smk"
+include: "rules/spinup_years.smk"
 include: "rules/prepare_climate.smk"
 
 ## Run TROLL ##

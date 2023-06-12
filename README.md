@@ -92,79 +92,60 @@ sbatch job_genologin.sh # run
 
 ## Climate
 
-### [prepare_guyaflux](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_guyaflux.smk)
-
-- Script:
-  [`prepare_guyaflux.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_guyaflux.R)
-
-Prepare guyaflux data at a half-hourly time step.
-
-### [prepare_era](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_era.smk)
-
-- Script:
-  [`prepare_era.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_era.R)
-
-Prepare ERA5-Land data at a half-hourly time step.
-
 ### [prepare_cordex](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_cordex.smk)
 
 - Script:
   [`prepare_cordex.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_cordex.R)
 
 Prepare South-America (SAM) CORDEX data for a given model and regional
-climate model (RCM) at a half-hourly time step.
+climate model (RCM) at a half-hourly time step, adjusted on historical
+ERA5-Land data.
+
+### [projection_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/projection_years.smk)
+
+- Script:
+  [`projection_years.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/projection_years.R)
+
+Define years from ERA5-Land historical for the projection simulations.
+
+### [prepare_projection](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_projection.smk)
+
+- Script:
+  [`prepare_projection.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_projection.R)
+
+Prepare ERA5-Land projection adjusted on South-America (SAM) CORDEX data
+for a given model and regional climate model (RCM) at a half-hourly time
+step, themselves adjusted on historical ERA5-Land data.
 
 ## TROLL inputs
 
-### [select_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/select_years.smk)
+### [spinup_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/spinup_years.smk)
 
 - Script:
-  [`select_years.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/select_years.R)
+  [`spinup_years.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/spinup_years.R)
 
-Define years for the warm-up simulations.
+Define years from ERA5-Land historical for the spin-up simulations.
 
-### [sample_climate](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/sample_climate.smk)
+### [prepare_climate](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_climate.smk)
 
 - Script:
-  [`sample_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/sample_climate.R)
+  [`prepare_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_climate.R)
 
-Prepare climate data as a TROLL input for defined years for the warm-up
-simulations.
+Prepare climate data as a TROLL input for a defined model and regional
+climate model (RCM).
 
 ## Run TROLL
 
-### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/troll_warm.smk)
+### [troll](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/troll.smk)
 
 - Script:
-  [`troll_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/troll_warm.R)
+  [`troll.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/troll.R)
 
-Run a TROLL warm up simulation before an experiments (e.g. creation of a
-600-years old mature forest).
-
-### [troll_exp](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/troll_exp.smk)
-
-- Script:
-  [`troll_exp.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/troll_exp.R)
-
-Run a TROLL simulation for an experiments.
+Run a TROLL simulation.
 
 ## TROLL outputs
 
-### [gather_repetition](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/gather_repetition.smk)
-
-- Script:
-  [`gather_repetition.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/gather_repetition.R)
-
-Gather outputs of different repetitions for a given type of experiment,
-period, and climate.
-
-### [gather_period](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/gather_period.smk)
-
-- Script:
-  [`gather_period.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/gather_period.R)
-
-Gather outputs of different climates for a given type of experiment and
-period.
+*Todo.*
 
 # Singularity
 
@@ -175,22 +156,14 @@ image](https://github.com/sylvainschmitt/singularity-troll).
 
 ## Climate
 
-#### **Guyaflux**
-
-- Paracou Eddy Flux tower data (Bonal et al. 2008)
-- Access on request
-- 2004 to 2022
-- VPD from relative humidity
-
 #### **ERA5-Land**
 
 - A global reanalysis dataset (Munoz-Sabater et al. 2021)
 - Access from Copernicus eased by
   [`rcontroll`](https://sylvainschmitt.github.io/rcontroll/articles/climate.html)
+  *(getEra workflow in preparation)*
 - Currently 2004 to 2022 (can go 1950)
 - VPD from dew point
-
-> Note: Adjustement to Guyaflux for realism?
 
 #### **CORDEX**
 
@@ -203,5 +176,3 @@ image](https://github.com/sylvainschmitt/singularity-troll).
 - Currently available models: MPI-M-MPI-ESM-MR
 - Currently available RCM: ICTP-RegCM4-7
 - Currently available scenario: historical, RCP 2.6 and RCP 8.5
-
-> Note: Adjustement to Guyaflux for realism?
