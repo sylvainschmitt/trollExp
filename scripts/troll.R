@@ -14,13 +14,13 @@ test <- snakemake@params$test
 test_years <- snakemake@params$test_years
 
 # test
-filein <- "results/simulations/NCC-NorESM1-M_REMO2015_rcp85_climate.tsv"
-model <- "NCC-NorESM1-M"
-rcm <- "REMO2015"
-exp <- "rcp85"
-verbose <- TRUE
-test <- TRUE
-test_years <- 0.1
+# filein <- "results/simulations/NCC-NorESM1-M_REMO2015_rcp85_climate.tsv"
+# model <- "NCC-NorESM1-M"
+# rcm <- "REMO2015"
+# exp <- "rcp85"
+# verbose <- TRUE
+# test <- TRUE
+# test_years <- 0.1
 
 # libraries
 library(tidyverse)
