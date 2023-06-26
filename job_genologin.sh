@@ -14,14 +14,13 @@ module load bioinfo/snakemake-5.25.0
 module load system/singularity-3.7.3
 
 # Variables
-DATA="/home/sschmitt/work/trollExp_climate/data"
 CONFIG=config/ressources.genologin.yaml
 COMMAND="sbatch --cpus-per-task={cluster.cpus} --time={cluster.time} --mem={cluster.mem} -J {cluster.jobname} -o snake_subjob_log/{cluster.jobname}.%N.%j.out -e snake_subjob_log/{cluster.jobname}.%N.%j.err"
 CORES=100
 mkdir -p snake_subjob_log
 
 # Workflow
-snakemake -s Snakefile --use-singularity --singularity-args "\-e \-B $DATA" -j $CORES --cluster-config $CONFIG --cluster "$COMMAND" --keep-going
+snakemake -s Snakefile --use-singularity --singularity-args -j $CORES --cluster-config $CONFIG --cluster "$COMMAND" --keep-going
 
 ## Session informations
 echo '########################################'
