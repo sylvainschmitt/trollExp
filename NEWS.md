@@ -1,3 +1,7 @@
+# trollExp - pheno-plumber 0.1.0.9015
+
+- init phenology test with PLUMBER2 data
+
 # trollExp - climate 0.1.0.9014
 
 - Use ERA5-Land for projections with seasonality

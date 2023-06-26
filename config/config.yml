@@ -1,15 +1,11 @@
 # data
-model: ["MOHC-HadGEM2-ES", "MPI-M-MPI-ESM", "NCC-NorESM1-M"]
-rcm: ["ICTP-RegCM4-7", "REMO2015"]
-scenario: ["rcp26", "rcp85"]
-repetitions: 1
+adress: "https://dapds00.nci.org.au/thredds/fileServer/ks32/CLEX_Data/PLUMBER2/v1-0/"
+sites: ["GF-Guy_2004-2014", "BR-Sa3_2001-2003"]
 
 # sim pars
-historical: [1970, 2005]
 spinup: 600
 verbose: yes
-cordex: "data/cordex" # to bind to singularity with `-B`
-era: "data/ERA5land_Paracou.tsv"
+# data: "data/cordex" # to bind to singularity with `-B`
 seed: 42 # for the random selection of years
 
 # singularity
@@ -17,5 +13,5 @@ seed: 42 # for the random selection of years
 troll: "singularity/troll.sif"
 
 # tests
-test: true
+test: false
 test_years: 0.1

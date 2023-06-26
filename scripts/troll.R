@@ -6,18 +6,15 @@ sink(log_file, append = TRUE)
 # snakemake vars
 filein <- snakemake@input[[1]]
 folderout <- snakemake@output[[1]]
-model <- as.character(snakemake@params$model)
-rcm <- as.character(snakemake@params$rcm)
-exp <- as.character(snakemake@params$exp)
+site <- as.character(snakemake@params$site)
 verbose <- snakemake@params$verbose
 test <- snakemake@params$test
 test_years <- snakemake@params$test_years
 
 # test
-# filein <- "results/simulations/NCC-NorESM1-M_REMO2015_rcp85_climate.tsv"
-# model <- "NCC-NorESM1-M"
-# rcm <- "REMO2015"
-# exp <- "rcp85"
+# filein <- "results/simulations/GF-Guy_2004-2014_climate.tsv"
+# folderout <- "results/simulations/GF-Guy_2004-2014"
+# site <- "GF-Guy_2004-2014"
 # verbose <- TRUE
 # test <- TRUE
 # test_years <- 0.1
@@ -28,7 +25,7 @@ library(rcontroll)
 library(vroom)
 
 # code
-name <- paste0(model, "_", rcm, "_", exp)
+name <- site
 path <- gsub(name, "", folderout)
 
 data("TROLLv4_species")

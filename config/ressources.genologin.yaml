@@ -4,27 +4,9 @@ __default__:
   cpus: 1
   time: "48:00:00"
   
-prepare_cordex:
-  jobname: "prepare_cordex"
-  mem: "10G"
-  cpus: 1
-  time: "01:00:00"
-
-projection_years:
-  jobname: "projection_years"
-  mem: "4"
-  cpus: 1
-  time: "01:00:00"
-
-prepare_projection:
-  jobname: "prepare_projection"
-  mem: "10G"
-  cpus: 1
-  time: "01:00:00"
-  
-spinup_years:
-  jobname: "spinup_years"
-  mem: "4"
+get_data:
+  jobname: "get_data"
+  mem: "1G"
   cpus: 1
   time: "01:00:00"
 

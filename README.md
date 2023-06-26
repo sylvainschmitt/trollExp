@@ -1,26 +1,22 @@
-trollExp - Run a TROLL experiment with climate
+trollExp - Run a TROLL experiment with phenology
 ================
 Sylvain Schmitt
-May 5, 2023
+June 26, 2023
 
-- <a href="#installation" id="toc-installation">Installation</a>
-- <a href="#usage" id="toc-usage">Usage</a>
-  - <a href="#locally" id="toc-locally">Locally</a>
-  - <a href="#hpc" id="toc-hpc">HPC</a>
-- <a href="#workflow" id="toc-workflow">Workflow</a>
-  - <a href="#climate" id="toc-climate">Climate</a>
-  - <a href="#troll-inputs" id="toc-troll-inputs">TROLL inputs</a>
-  - <a href="#run-troll" id="toc-run-troll">Run TROLL</a>
-  - <a href="#troll-outputs" id="toc-troll-outputs">TROLL outputs</a>
-- <a href="#singularity" id="toc-singularity">Singularity</a>
-- <a href="#data" id="toc-data">Data</a>
-  - <a href="#climate-1" id="toc-climate-1">Climate</a>
+- [Installation](#installation)
+- [Usage](#usage)
+- [Workflow](#workflow)
+- [Singularity](#singularity)
+- [Data](#data)
 
 [`singularity` &
 `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity)
-workflow to run a TROLL experiment with climate.
+workflow to run a TROLL experiment with phenology.
 
-![Workflow.](dag/dag.svg)
+<figure>
+<img src="dag/dag.svg" alt="Workflow." />
+<figcaption aria-hidden="true">Workflow.</figcaption>
+</figure>
 
 # Installation
 
@@ -56,31 +52,20 @@ cd ${GOPATH}/src/github.com/sylabs/singularity && \
 # detect Mutations
 git clone git@github.com:sylvainschmitt/trollExp.git
 cd trollExp
-git checkout climate
+git checkout pheno-plumber
 ```
 
 # Usage
 
-## Locally
+### Locally
 
 ``` bash
 snakemake -np -j 1 # dry run
 snakemake --dag | dot -Tsvg > dag/dag.svg # dag
-data="/home/sschmitt/Documents/trollExp_climate/data"
-snakemake -j 1 --use-singularity --singularity-args "\-e \-B $data" # run
+snakemake -j 1 --use-singularity --singularity-args # run
 ```
 
-## HPC
-
-### Muse
-
-``` bash
-module load snakemake # for test on node
-snakemake -np # dry run
-sbatch job_muse.sh # run
-```
-
-### Genologin
+### HPC
 
 ``` bash
 module load bioinfo/snakemake-5.25.0 # for test on node
@@ -90,62 +75,25 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
-## Climate
+### [get_data](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/get_fluxes.py)
 
-### [prepare_cordex](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_cordex.smk)
+Download data from PLUMBER2, the flux tower dataset tailored for land
+model evaluation (<https://essd.copernicus.org/articles/14/449/2022/>).
 
-- Script:
-  [`prepare_cordex.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_cordex.R)
-
-Prepare South-America (SAM) CORDEX data for a given model and regional
-climate model (RCM) at a half-hourly time step, adjusted on historical
-ERA5-Land data.
-
-### [projection_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/projection_years.smk)
+### [prepare_climate](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_climate.py)
 
 - Script:
-  [`projection_years.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/projection_years.R)
-
-Define years from ERA5-Land historical for the projection simulations.
-
-### [prepare_projection](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_projection.smk)
-
-- Script:
-  [`prepare_projection.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_projection.R)
-
-Prepare ERA5-Land projection adjusted on South-America (SAM) CORDEX data
-for a given model and regional climate model (RCM) at a half-hourly time
-step, themselves adjusted on historical ERA5-Land data.
-
-## TROLL inputs
-
-### [spinup_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/spinup_years.smk)
-
-- Script:
-  [`spinup_years.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/spinup_years.R)
-
-Define years from ERA5-Land historical for the spin-up simulations.
-
-### [prepare_climate](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_climate.smk)
-
-- Script:
-  [`prepare_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_climate.R)
+  [`prepare_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_climate.R)
 
 Prepare climate data as a TROLL input for a defined model and regional
 climate model (RCM).
 
-## Run TROLL
-
-### [troll](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/troll.smk)
+### [troll](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/troll.py)
 
 - Script:
-  [`troll.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/troll.R)
+  [`troll.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/troll.R)
 
 Run a TROLL simulation.
-
-## TROLL outputs
-
-*Todo.*
 
 # Singularity
 
@@ -154,25 +102,12 @@ image](https://github.com/sylvainschmitt/singularity-troll).
 
 # Data
 
-## Climate
+#### **`PLUMBER2`**
 
-#### **ERA5-Land**
-
-- A global reanalysis dataset (Munoz-Sabater et al. 2021)
-- Access from Copernicus eased by
-  [`rcontroll`](https://sylvainschmitt.github.io/rcontroll/articles/climate.html)
-  *(getEra workflow in preparation)*
-- Currently 2004 to 2022 (can go 1950)
-- VPD from dew point
-
-#### **CORDEX**
-
-- A Coordinated Regional Climate Downscaling Experiment for South
-  America
-- Access from IPGSL node eased by [`getCordex`
-  workflow](https://github.com/sylvainschmitt/getCordex).
-- Historical from 1950 to 2006, RCP from 2006 to 2100
-- VPD from relative humidity
-- Currently available models: MPI-M-MPI-ESM-MR
-- Currently available RCM: ICTP-RegCM4-7
-- Currently available scenario: historical, RCP 2.6 and RCP 8.5
+- Sites:
+  - GF-Guy (Guyaflux)
+  - BR-Sa3 (Santarem)
+- Variables: GPP, LAI (Copernicus & MODIS), LE
+- Periods: 2001:2003 (BR-Sa3) & 2004:2014 (GF-Guy)
+- Origin: EddyFlux & satellites
+- Link: <https://essd.copernicus.org/articles/14/449/2022/>
