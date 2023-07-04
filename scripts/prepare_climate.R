@@ -41,7 +41,7 @@ extract_nc <- function(path) {
 # climate
 climate <- extract_nc(met_path) %>% 
   left_join(extract_nc(flux_path)) %>% 
-  mutate(rainfall = Precip*1000,
+  mutate(rainfall = Precip*60*60*0.5,
          snet = ifelse(is.na(Rnet), SWdown - SWup, Rnet),
          temperature = Tair  - 273.15,
          vpd = VPD/10,
