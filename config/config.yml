@@ -1,6 +1,6 @@
 # data
 adress: "https://dapds00.nci.org.au/thredds/fileServer/ks32/CLEX_Data/PLUMBER2/v1-0/"
-sites: ["GF-Guy_2004-2014", "BR-Sa3_2001-2003"]
+sites: ["GF-Guy_2004-2014", "BR-Sa3_2001-2003", "GF-Guy-ERA5", "GF-Guy-Raw"]
 
 # sim pars
 spinup: 600
@@ -13,5 +13,5 @@ seed: 42 # for the random selection of years
 troll: "singularity/troll.sif"
 
 # tests
-test: false
+test: yes
 test_years: 0.1

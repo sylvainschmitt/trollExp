@@ -10,4 +10,6 @@ rule all:
 # Rules #
 include: "rules/get_data.py"
 include: "rules/prepare_climate.py"
+include: "rules/prepare_climate_era.py"
+include: "rules/prepare_climate_raw.py"
 include: "rules/troll.py"
