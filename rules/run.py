@@ -1,12 +1,13 @@
-rule troll:
+rule run:
     input:
-        "results/simulations/{site}_climate.tsv"
+        "results/run/{site}_climate.tsv",
+        "results/spinup/{site}"
     output:
-        directory("results/simulations/{site}")
+        directory("results/run/{site}")
     log:
-        "results/logs/troll_{site}.log"
+        "results/logs/run_{site}.log"
     benchmark:
-        "results/benchmarks/troll_{site}.benchmark.txt"
+        "results/benchmarks/run_{site}.benchmark.txt"
     singularity:
         config["troll"]
     threads: 1
@@ -16,4 +17,4 @@ rule troll:
         test=config["test"],
         test_years=config["test_years"]
     script:
-        "../scripts/troll.R"
+        "../scripts/run.R"

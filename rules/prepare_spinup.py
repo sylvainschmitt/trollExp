@@ -1,14 +1,14 @@
-rule prepare_climate:
+rule prepare_spinup:
     input:
         met="results/data/{site}_FLUXNET2015_Met.nc",
         flux="results/data/{site}_FLUXNET2015_Flux.nc"
     output:
-        tab="results/simulations/{site}_climate.tsv",
-        fig="results/simulations/{site}_climate.png"
+        tab="results/spinup/{site}_climate.tsv",
+        fig="results/spinup/{site}_climate.png"
     log:
-        "results/logs/prepare_climate_{site}.log"
+        "results/logs/prepare_spinup_{site}.log"
     benchmark:
-        "results/benchmarks/prepare_climate_{site}.benchmark.txt"
+        "results/benchmarks/prepare_spinup_{site}.benchmark.txt"
     singularity:
         config["troll"]
     threads: 1
@@ -17,5 +17,5 @@ rule prepare_climate:
         seed=config["seed"],
         site="{site}"
     script:
-        "../scripts/prepare_climate.R"
+        "../scripts/prepare_spinup.R"
         
