@@ -80,21 +80,61 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
+## Spin-up
+
 ### [get_data](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/get_fluxes.py)
 
 Download data from PLUMBER2,
 the flux tower dataset tailored for land model evaluation
 (https://essd.copernicus.org/articles/14/449/2022/).
 
-### [prepare_climate](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_climate.py)
+### [prepare_spinup](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_spinup.py)
 
-* Script: [`prepare_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_climate.R)
+* Script: [`prepare_spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_spinup.R)
 
-Prepare climate data as a TROLL input for a defined model and regional climate model (RCM).
+Prepare climate data as a TROLL input for a defined model and regional climate model (RCM) for the spin-up.
 
-### [troll](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/troll.py)
+### [prepare_spinup_era](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_spinup_era.py)
 
-* Script: [`troll.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/troll.R)
+* Script: [`prepare_spinup_era.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_spinup_era.R)
+
+Prepare climate data as a TROLL input for a defined model and regional climate model (RCM) for the spin-up with ERA5-Land data.
+
+### [prepare_spinup_raw](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_spinup_raw.py)
+
+* Script: [`prepare_spinup_raw.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_spinup_raw.R)
+
+Prepare climate data as a TROLL input for a defined model and regional climate model (RCM) for the spin-up with raw eddy-tower data.
+
+### [spinup](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/spinup.py)
+
+* Script: [`spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/spinup.R)
+
+Run a TROLL simulation for the 600-years spin-up.
+
+## Run
+
+### [prepare_run](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_run.py)
+
+* Script: [`prepare_run.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_run.R)
+
+Prepare climate data as a TROLL input for a defined model and regional climate model (RCM) for the run.
+
+### [prepare_run_era](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_run_era.py)
+
+* Script: [`prepare_run_era.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_run_era.R)
+
+Prepare climate data as a TROLL input for a defined model and regional climate model (RCM) for the run with ERA5-Land data.
+
+### [prepare_run_raw](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_run_raw.py)
+
+* Script: [`prepare_run_raw.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_run_raw.R)
+
+Prepare climate data as a TROLL input for a defined model and regional climate model (RCM) for the run with raw eddy-tower data.
+
+### [run](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/run.py)
+
+* Script: [`run.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/run.R)
 
 Run a TROLL simulation.
 
