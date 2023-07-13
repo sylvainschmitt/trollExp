@@ -8,7 +8,7 @@ filein <- snakemake@input[[1]]
 folderout <- snakemake@output[[1]]
 site <- as.character(snakemake@params$site)
 verbose <- snakemake@params$verbose
-mature_years <- snakemake@params$mature_years
+spinup <- snakemake@params$spinup
 test <- snakemake@params$test
 test_years <- snakemake@params$test_years
 
@@ -17,7 +17,7 @@ test_years <- snakemake@params$test_years
 # folderout <- "results/simulations/Acarouany"
 # site <- "Acarouany"
 # verbose <- TRUE
-# mature_years <- 600
+# spinup <- 600
 # test <- TRUE
 # test_years <- 0.1
 
@@ -47,9 +47,11 @@ if(site != "default"){
            proportion_Sand = data$sand)
 }
 
-n <- as.numeric(mature_years)*365
+n <- as.numeric(spinup)*365
 if(test)
   n <- round(test_years*365)
+
+print(n)
 
 sim <- troll(
   name = site,
