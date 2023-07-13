@@ -1,5 +1,5 @@
-# configfile: "config/config.yml"
-configfile: "config/config_dag.yml"
+configfile: "config/config.yml"
+# configfile: "config/config_dag.yml"
 
 ruleorder: prepare_spinup > spinup
 ruleorder: prepare_run > run
@@ -14,6 +14,7 @@ rule all:
 # Rules #
 
 ## Spinup ##
+# Wrong only one spin-up from ERA5-Land for comparison
 include: "rules/spinup_years.py"
 include: "rules/prepare_spinup.py"
 include: "rules/spinup.py"

@@ -1,7 +1,7 @@
 rule spinup_years:
     output:
-        tab="results/climate/spinup_years.tsv",
-        fig="results/climate/spinup_years.png"
+        tab="results/spinup/spinup_years.tsv",
+        fig="results/spinup/spinup_years.png"
     log:
         "results/logs/select_years.log"
     benchmark:

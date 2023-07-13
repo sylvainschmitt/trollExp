@@ -30,16 +30,16 @@ if(spinup > length(years))
   sampled_years <- sample(years, spinup, replace = TRUE)
 if(spinup <= length(years))
   sampled_years <- sample(years, spinup, replace = FALSE)
-sampled_years <- data.frame(era_year = sampled_years) %>% 
+sampled_years <- data.frame(climate_year = sampled_years) %>% 
   mutate(sim_year = (ymax-spinup+1):ymax)
 write_tsv(sampled_years, fileout)
 
 g1 <- sampled_years %>% 
-  ggplot(aes(sim_year, era_year)) +
+  ggplot(aes(sim_year, climate_year)) +
   geom_density_2d_filled(show.legend = FALSE) +
   geom_point() +
   theme_bw()
-g2 <- ggplot(sampled_years, aes(era_year)) +
+g2 <- ggplot(sampled_years, aes(climate_year)) +
   geom_histogram(col = NA) +
   theme_bw() +
   coord_flip()

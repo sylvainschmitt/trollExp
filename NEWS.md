@@ -1,3 +1,7 @@
+# trollExp - climate 0.1.0.9016
+
+- new workflow ready and tested
+
 # trollExp - climate 0.1.0.9015
 
 - new workflow with spinup & run thanks to start & stop

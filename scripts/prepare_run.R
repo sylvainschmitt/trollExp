@@ -8,32 +8,29 @@ climate_path <- snakemake@input[["climate"]]
 years_path <- snakemake@input[["years"]]
 fileout <- snakemake@output[["tab"]]
 figureout <- snakemake@output[["fig"]]
+mod <- as.character(snakemake@params$model)
+rc <- as.character(snakemake@params$rcm)
+exp <- as.character(snakemake@params$exp)
 
 # test
-# climate_path <- "data/ERA5land_Paracou.tsv"
-# years_path <- "results/spinup/spinup_years.tsv"
+# climate_path <- "data/cordex_adjusted.tsv"
+# mod <- "NCC-NorESM1-M"
+# rc <- "REMO2015"
+# exp <- "rcp85"
 
 # libraries
 library(tidyverse)
 library(vroom)
 
 # code
-spinup_years <- vroom(years_path)
-climate <- vroom(climate_path)
+climate <- vroom(climate_path) %>% 
+  filter(model == mod, rcm == rc, experiment == exp) %>% 
+  filter(paste0(month(time), "-", day(time)) != "02-29") %>% 
+  select(-path, -file, -model, -rcm, -experiment)
 
-spinup <- spinup_years %>% 
-  left_join(mutate(climate, climate_year = year(time)),
-            multiple = "all",
-            by = join_by(climate_year)) %>% 
-  mutate(months_diff = (sim_year - climate_year)*12) %>% 
-  mutate(time = time %m+% months(months_diff)) %>% 
-  select(-months_diff) %>% 
-  filter(paste0(month(time), "-", day(time)) != "02-29")
+write_tsv(x = climate, file = fileout)
 
-write_tsv(x = spinup, file = fileout)
-
-g <- spinup %>%
-  select(-climate_year, -sim_year) %>% 
+g <- climate %>%
   group_by(year = year(time)) %>%
   select(-time) %>%
   mutate(rainfall = sum(rainfall, na.rm = TRUE)) %>%
@@ -44,6 +41,7 @@ g <- spinup %>%
   geom_line(alpha = 0.25) +
   facet_wrap(~ variable, scales = "free_y") +
   theme_bw() +
-  xlab("") + ylab("")
+  xlab("") + ylab("") +
+  ggtitle(paste(mod, rc, exp))
 
 ggsave(plot = g, filename = figureout, bg = "white", width = 8, height = 5)

@@ -1,18 +1,16 @@
 rule spinup:
     input:
-        "results/spinup/{model}_{rcm}_climate.tsv"
+        "results/spinup/era_climate.tsv"
     output:
-        directory("results/spinup/{model}_{rcm}")
+        directory("results/spinup/era")
     log:
-        "results/logs/spinup_{model}_{rcm}.log"
+        "results/logs/spinup.log"
     benchmark:
-        "results/benchmarks/spinup_{model}_{rcm}.benchmark.txt"
+        "results/benchmarks/spinup.benchmark.txt"
     singularity:
         config["troll"]
     threads: 1
     params:
-        model="{model}",
-        rcm="{rcm}",
         verbose=config["verbose"],
         test=config["test"],
         test_years=config["test_years"]

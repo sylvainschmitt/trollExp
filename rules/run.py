@@ -1,7 +1,7 @@
 rule run:
     input:
         "results/run/{model}_{rcm}_{exp}_climate.tsv",
-        "results/spinup/{model}_{rcm}"
+        "results/spinup/era"
     output:
         directory("results/run/{model}_{rcm}_{exp}")
     log:

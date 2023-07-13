@@ -5,7 +5,11 @@ sink(log_file, append = TRUE)
 
 # snakemake vars
 filein <- snakemake@input[[1]]
+folderin <- snakemake@input[[2]]
 folderout <- snakemake@output[[1]]
+model <- as.character(snakemake@params$model)
+rcm <- as.character(snakemake@params$rcm)
+exp <- as.character(snakemake@params$exp)
 verbose <- snakemake@params$verbose
 test <- snakemake@params$test
 test_years <- snakemake@params$test_years
@@ -22,11 +26,8 @@ library(rcontroll)
 library(vroom)
 
 # code
-name <- "era"
+name <- paste0(model, "_", rcm, "_", exp)
 path <- gsub(name, "", folderout)
-
-data("TROLLv4_species")
-data("TROLLv4_pedology")
 
 data <- vroom(filein,
               col_types = list(rainfall = "numeric")) %>% 
@@ -41,14 +42,19 @@ n <- as.numeric(nrow(clim))
 if(test)
   n <- round(test_years*365)
 
+spinup <-  load_output(name = "era",
+                       path = folderin)
+
 sim <- troll(
   name = name,
   path = path,
-  global = generate_parameters(nbiter = n),
-  species = TROLLv4_species,
+  global = update_parameters(spinup, nbiter = n),
+  species = spinup@inputs$species, 
   climate = clim,
   daily = day,
-  pedology = TROLLv4_pedology,
+  pedology = spinup@inputs$pedology, 
+  forest = get_forest(spinup),
+  soil = get_soil(spinup), 
   load = FALSE,
   verbose = verbose,
   overwrite = TRUE

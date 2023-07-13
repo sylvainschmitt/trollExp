@@ -1,20 +1,17 @@
 rule prepare_spinup:
     input:
-        climate="data/cordex_adjusted.tsv",
-        years="results/climate/spinup_years.tsv"
+        climate="data/ERA5land_Paracou.tsv",
+        years="results/spinup/spinup_years.tsv"
     output:
-        tab="results/spinup/{model}_{rcm}_climate.tsv",
-        fig="results/spinup/{model}_{rcm}_climate.png"
+        tab="results/spinup/era_climate.tsv",
+        fig="results/spinup/era_climate.png"
     log:
-        "results/logs/prepare_spinup_{model}_{rcm}.log"
+        "results/logs/prepare_spinup.log"
     benchmark:
-        "results/benchmarks/prepare_spinup_{model}_{rcm}.benchmark.txt"
+        "results/benchmarks/prepare_spinup.benchmark.txt"
     singularity:
         config["troll"]
     threads: 1
-    params:
-        model="{model}",
-        rcm="{rcm}"
     script:
         "../scripts/prepare_spinup.R"
         
