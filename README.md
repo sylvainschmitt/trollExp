@@ -3,24 +3,23 @@ trollExp - Run a TROLL experiment with climate
 Sylvain Schmitt
 May 5, 2023
 
-- <a href="#installation" id="toc-installation">Installation</a>
-- <a href="#usage" id="toc-usage">Usage</a>
-  - <a href="#locally" id="toc-locally">Locally</a>
-  - <a href="#hpc" id="toc-hpc">HPC</a>
-- <a href="#workflow" id="toc-workflow">Workflow</a>
-  - <a href="#climate" id="toc-climate">Climate</a>
-  - <a href="#troll-inputs" id="toc-troll-inputs">TROLL inputs</a>
-  - <a href="#run-troll" id="toc-run-troll">Run TROLL</a>
-  - <a href="#troll-outputs" id="toc-troll-outputs">TROLL outputs</a>
-- <a href="#singularity" id="toc-singularity">Singularity</a>
-- <a href="#data" id="toc-data">Data</a>
-  - <a href="#climate-1" id="toc-climate-1">Climate</a>
+- [Installation](#installation)
+- [Usage](#usage)
+- [Workflow](#workflow)
+  - [Spin-up](#spin-up)
+  - [Run](#run)
+  - [Outputs](#outputs)
+- [Singularity](#singularity)
+- [Data](#data)
 
 [`singularity` &
 `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity)
 workflow to run a TROLL experiment with climate.
 
-![Workflow.](dag/dag.svg)
+<figure>
+<img src="dag/dag.svg" alt="Workflow." />
+<figcaption aria-hidden="true">Workflow.</figcaption>
+</figure>
 
 # Installation
 
@@ -61,23 +60,13 @@ git checkout climate
 
 # Usage
 
-## Locally
+### Locally
 
 ``` bash
 snakemake -np -j 1 # dry run
 snakemake --dag | dot -Tsvg > dag/dag.svg # dag
 data="/home/sschmitt/Documents/trollExp_climate/data"
 snakemake -j 1 --use-singularity --singularity-args "\-e \-B $data" # run
-```
-
-## HPC
-
-### Muse
-
-``` bash
-module load snakemake # for test on node
-snakemake -np # dry run
-sbatch job_muse.sh # run
 ```
 
 ### Genologin
@@ -90,60 +79,50 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
-## Climate
-
-### [prepare_cordex](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_cordex.smk)
-
-- Script:
-  [`prepare_cordex.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_cordex.R)
-
-Prepare South-America (SAM) CORDEX data for a given model and regional
-climate model (RCM) at a half-hourly time step, adjusted on historical
-ERA5-Land data.
-
-### [projection_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/projection_years.smk)
-
-- Script:
-  [`projection_years.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/projection_years.R)
-
-Define years from ERA5-Land historical for the projection simulations.
-
-### [prepare_projection](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_projection.smk)
-
-- Script:
-  [`prepare_projection.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_projection.R)
-
-Prepare ERA5-Land projection adjusted on South-America (SAM) CORDEX data
-for a given model and regional climate model (RCM) at a half-hourly time
-step, themselves adjusted on historical ERA5-Land data.
-
-## TROLL inputs
+## Spin-up
 
 ### [spinup_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/spinup_years.smk)
 
 - Script:
   [`spinup_years.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/spinup_years.R)
 
-Define years from ERA5-Land historical for the spin-up simulations.
+Define years from the historical period for the spin-up simulations.
 
-### [prepare_climate](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_climate.smk)
+### [prepare_spinup](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spinup.smk)
 
 - Script:
-  [`prepare_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_climate.R)
+  [`prepare_spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spinupe.R)
 
-Prepare climate data as a TROLL input for a defined model and regional
+Prepare spin-up data as a TROLL input for a defined model and regional
 climate model (RCM).
 
-## Run TROLL
-
-### [troll](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/troll.smk)
+### [spinup](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/spinup.smk)
 
 - Script:
-  [`troll.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/troll.R)
+  [`spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/spinup.R)
 
-Run a TROLL simulation.
+Run a TROLL simulation for the 600-years spin-up with historical
+climate.
 
-## TROLL outputs
+## Run
+
+### [prepare_run](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_run.smk)
+
+- Script:
+  [`prepare_run.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_run.R)
+
+Prepare run data as a TROLL input for a defined model and regional
+climate model (RCM).
+
+### [run](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/run.smk)
+
+- Script:
+  [`run.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/run.R)
+
+Run a TROLL simulation for the century with climate from a defined
+experiment (RCP).
+
+## Outputs
 
 *Todo.*
 
@@ -153,8 +132,6 @@ The whole workflow currently rely on the [`singularity-troll`
 image](https://github.com/sylvainschmitt/singularity-troll).
 
 # Data
-
-## Climate
 
 #### **ERA5-Land**
 

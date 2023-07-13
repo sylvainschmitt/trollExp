@@ -1,3 +1,8 @@
+# trollExp - climate 0.1.0.9015
+
+- new workflow with spinup & run thanks to start & stop
+- R script to update
+
 # trollExp - climate 0.1.0.9014
 
 - Use ERA5-Land for projections with seasonality
