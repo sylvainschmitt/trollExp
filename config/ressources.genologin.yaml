@@ -3,12 +3,6 @@ __default__:
   mem: "10G"
   cpus: 1
   time: "48:00:00"
-  
-get_soil:
-  jobname: "get_soil"
-  mem: "10G"
-  cpus: 1
-  time: "01:00:00"
 
 extract_soil:
   jobname: "extract_soil"
@@ -16,15 +10,8 @@ extract_soil:
   cpus: 1
   time: "01:00:00"
 
-troll_warm:
-  jobname: "troll_warm"
+spinup:
+  jobname: "spinup"
   mem: "10G"
   cpus: 1
   time: "96:00:00"
-
-gather_warm.R:
-  jobname: "gather_warm.R"
-  mem: "100G"
-  cpus: 1
-  time: "01:00:00"
-  

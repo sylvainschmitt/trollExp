@@ -4,95 +4,61 @@ sink(log_file, append = TRUE, type = "message")
 sink(log_file, append = TRUE)
 
 # snakemake vars
-filesin <- snakemake@input
+guyaforfile <- snakemake@input[["guyafor"]]
+clayfile <- snakemake@input[["clay"]]
+sandfile <- snakemake@input[["sand"]]
+siltfile <- snakemake@input[["silt"]]
 fileout <- snakemake@output[[1]]
-figure_plot <- snakemake@output[[2]]
-figure_cor <- snakemake@output[[3]]
-figure_tern <- snakemake@output[[4]]
-plots <- as.character(snakemake@params$plots)
-
+figure_tern <- snakemake@output[[2]]
 
 # test
-# filesin <- c(
-#   "results/soil/rasters/silt_0-5cm.tif",
-#   "results/soil/rasters/silt_5-15cm.tif",
-#   "results/soil/rasters/clay_0-5cm.tif",
-#   "results/soil/rasters/clay_5-15cm.tif",
-#   "results/soil/rasters/sand_0-5cm.tif",
-#   "results/soil/rasters/sand_5-15cm.tif"
-# )
-# plots <- c(
-#   "5.267241344232334, -52.92436802555797",
-#   "Réserve naturelle des nouragues, 97301, Régina"
-# )
+guyaforfile <- "data/guyafor.tsv"
+clayfile <- "data/clay.tif"
+sandfile <- "data/sand.tif"
+siltfile <- "data/silt.tif"
 
 # libs
+library(vroom)
 library(tidyverse)
 library(terra)
 library(sf)
-library(nominatimlite)
-library(corrplot)
 library(ggtern)
 
 # rasters
-layers <- filesin %>% 
+soil <- list(clayfile,
+               sandfile,
+               siltfile) %>% 
   lapply(rast) %>% 
   rast()
+names(soil) <- c("clay", "sand", "silt")
 
-# plots
-plots <- data.frame(plots = plots) %>% 
-  mutate(plots = geo_lite_sf(plots)) %>% 
-  unnest() %>% 
-  st_as_sf() %>% 
-  st_transform(crs = crs(layers))
-
-# extract
-res <- terra::extract(layers, plots, bind = TRUE) %>% 
-  as.data.frame() %>% 
-  select(-query) %>% 
-  separate(address, "address", ",") %>% 
-  gather(variable, value, -address) %>% 
-  separate(variable, c("variable", "depth"), "_")
+gf_xy <- vroom(guyaforfile) %>%
+  select(Forest, Xutm, Yutm) %>% 
+  group_by(Forest) %>% 
+  summarise_all(mean, na.rm = TRUE) %>% 
+  na.omit() %>% 
+  st_as_sf(coords = c("Xutm", "Yutm"),
+           crs = '+proj=utm +zone=22 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0')
+gf_xy <- gf_xy %>%
+  bind_cols(terra::extract(soil, gf_xy))
 
 # save
-write_tsv(res, fileout)
+write_tsv(as.data.frame(gf_xy), fileout)
 
 # plot
-g_plots <- res %>%
-  mutate(address = gsub(" ", "\n", address)) %>% 
-  ggplot(aes(address, value, fill = depth)) +
-  geom_col(position = "dodge") +
-  theme_bw() +
-  facet_wrap(~ variable, scales = "free") +
-  theme(legend.position = "bottom", axis.title = element_blank()) +
-  scale_fill_viridis_d() +
-  coord_flip()
-
-ggsave(g_plots, filename = figure_plot)
-
-png(figure_cor)
-layers %>% 
-  as.data.frame() %>% 
-  select(contains("0-5cm")) %>% 
-  cor(use = "pairwise.complete.obs") %>% 
-  corrplot.mixed(tl.pos	= "lt")
-dev.off()
-
-g_tern <- res %>% 
-  filter(variable %in% c("sand", "clay", "silt")) %>% 
-  pivot_wider(names_from = variable, values_from = value) %>% 
-  ggplot(aes(x = sand, y = clay, z = silt, 
-             shape = address, col = depth)) +
+g_tern <- gf_xy %>%
+  group_by(Forest, geometry, ID) %>%
+  summarise_all(median) %>%
+  ggplot(aes(x = sand, y = clay, z = silt)) +
   ggtern::coord_tern(L = "x", T = "y", R = "z") +
-  geom_point(size = 3) +
+  geom_text(aes(label = Forest), size = 3) +
   theme_bw() +
-  scale_color_viridis_d() +
   labs(
     yarrow = "Clay (%)",
     zarrow = "Silt (%)",
     xarrow = "Sand (%)"
   ) +
   ggtern::theme_showarrows() +
-  ggtern::theme_hidetitles()+
+  ggtern::theme_hidetitles() +
   ggtern::theme_clockwise()
 ggsave(g_tern, filename = figure_tern)

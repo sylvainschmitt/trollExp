@@ -62,7 +62,7 @@ git checkout soil
 
 # Usage
 
-## Locally
+### Locally
 
 ```{bash, eval=F, echo=T}
 snakemake -np -j 1 # dry run
@@ -70,17 +70,7 @@ snakemake --dag | dot -Tsvg > dag/dag.svg # dag
 snakemake -j 1 --use-singularity --singularity-args "\-e" # run
 ```
 
-## HPC
-
-### Muse
-
-```{bash, eval=F, echo=T}
-module load snakemake # for test on node
-snakemake -np # dry run
-sbatch job_muse.sh # run
-```
-
-### Genologin
+### HPC
 
 ```{bash, eval=F, echo=T}
 module load bioinfo/snakemake-5.25.0 # for test on node
@@ -90,46 +80,33 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
-## Soil
-
-### [get_soil](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/get_soil.smk)
-
-* Script: [`get_soil.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/get_soilx.R)
-
-Download SoildGrids data for a given variable and depth.
-
-### [extract_soil](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/extract_soil.smk)
+### [extract_soil](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/extract_soil.py)
 
 * Script: [`extract_soil.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/extract_soil.R)
 
-Extract soil data for given addresses.
+Extract soil data for given plot.
 
-## Run TROLL
+### [spinup](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/spinup.py)
 
-### [troll_warm](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/troll_warm.smk)
+* Script: [`spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/spinup.R)
 
-* Script: [`troll_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/troll_warm.R)
+Run a TROLL spin-up simulation (e.g. creation of a 600-years old mature forest).
 
-Run a TROLL warm up simulation (e.g. creation of a 600-years old mature forest).
-
-## TROLL outputs
-
-### [gather_warm](https://github.com/sylvainschmitt/trollExp/blob/main/rules/gather_warm.smk)
-
-- Script:
-  [`gather_warm.R`](https://github.com/sylvainschmitt/trollExp/blob/main/scripts/gather_warm.R)
-
-Gather outputs of all experiments.
 
 # Singularity
 
 The whole workflow currently rely on the [`singularity-troll` image](https://github.com/sylvainschmitt/singularity-troll).
 
-> need to add tidyterra, ggtern
-
 # Data
 
-## Soil
+#### **METRADICA**
+
+1kmx1km soil texture information for French Guiana.
+We will use following variables for TROLL:
+
+* silt: proportion of silt
+* clay: proportion of clay
+* sand: proportion of sand
 
 #### **SoilGrids**
 
