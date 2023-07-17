@@ -10,14 +10,50 @@ get_data:
   cpus: 1
   time: "01:00:00"
 
-prepare_climate:
-  jobname: "prepare_climate"
+prepare_spinup:
+  jobname: "prepare_spinup"
   mem: "10G"
   cpus: 1
   time: "01:00:00"
   
-troll:
-  jobname: "troll"
+prepare_spinup_era:
+  jobname: "prepare_spinup_era"
+  mem: "10G"
+  cpus: 1
+  time: "01:00:00"
+  
+prepare_spinup_raw:
+  jobname: "prepare_spinup_raw"
+  mem: "10G"
+  cpus: 1
+  time: "01:00:00"
+  
+spinup:
+  jobname: "spinup"
+  mem: "10G"
+  cpus: 1
+  time: "96:00:00"
+  
+prepare_run:
+  jobname: "prepare_run"
+  mem: "10G"
+  cpus: 1
+  time: "01:00:00"
+  
+prepare_run_era:
+  jobname: "prepare_spiprepare_run_eranup_era"
+  mem: "10G"
+  cpus: 1
+  time: "01:00:00"
+  
+prepare_run_raw:
+  jobname: "prepare_run_raw"
+  mem: "10G"
+  cpus: 1
+  time: "01:00:00"
+  
+run:
+  jobname: "run"
   mem: "10G"
   cpus: 1
   time: "96:00:00"
