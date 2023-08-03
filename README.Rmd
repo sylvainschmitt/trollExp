@@ -1,7 +1,7 @@
 ---
-title: "trollExp - Run a TROLL experiment with climate"
+title: "trollExp - Run a TROLL experiment with logging"
 author: Sylvain Schmitt
-date: May 5, 2023
+date: Jully 18, 2023
 output:
   github_document: 
     toc: yes
@@ -17,7 +17,7 @@ opts_chunk$set(echo = F, message = F, warning = F, fig.height = 6, fig.width = 8
                cache = F, cache.lazy = F)
 ```
 
-[`singularity` & `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity) workflow to run a TROLL experiment with climate.
+[`singularity` & `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity) workflow to run a TROLL experiment with logging
 
 ```{r dag, fig.cap="Workflow."}
 knitr::include_graphics("dag/dag.svg")
@@ -57,7 +57,7 @@ cd ${GOPATH}/src/github.com/sylabs/singularity && \
 # detect Mutations
 git clone git@github.com:sylvainschmitt/trollExp.git
 cd trollExp
-git checkout climate
+git checkout logging
 ```
 
 # Usage
@@ -81,47 +81,58 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
-## Spin-up
+### [spinup_years](https://github.com/sylvainschmitt/trollExp/blob/logging/rules/spinup_years.smk)
 
-### [spinup_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/spinup_years.smk)
-
-* Script: [`spinup_years.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/spinup_years.R)
+* Script: [`spinup_years.R`](https://github.com/sylvainschmitt/trollExp/blob/logging/scripts/spinup_years.R)
 
 Define years from the historical period for the spin-up simulations.
 
-### [prepare_spinup](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spinup.smk)
+### [prepare_spinup](https://github.com/sylvainschmitt/trollExp/blob/logging/rules/prepare_spinup.smk)
 
-* Script: [`prepare_spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spinupe.R)
+* Script: [`prepare_spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/logging/scripts/prepare_spinupe.R)
 
-Prepare spin-up data as a TROLL input for a defined model and regional climate model (RCM).
+Prepare spin-up data as a TROLL input from ERA5-Land.
 
-### [spinup](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/spinup.smk)
+### [spinup](https://github.com/sylvainschmitt/trollExp/blob/logging/rules/spinup.smk)
 
-* Script: [`spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/spinup.R)
+* Script: [`spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/logging/scripts/spinup.R)
 
 Run a TROLL simulation for the 600-years spin-up with historical climate.
 
-## Run
+### [log](https://github.com/sylvainschmitt/trollExp/blob/logging/rules/log.smk)
 
-### [prepare_run](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_run.smk)
+* Script: [`log.R`](https://github.com/sylvainschmitt/trollExp/blob/logging/scripts/log.R)
 
-* Script: [`prepare_run.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_run.R)
+Run a LoggingLab simulation of selective logging with a TROLL simulation inventory.
 
-Prepare run data as a TROLL input for a defined model and regional climate model (RCM).
+### [postlog](https://github.com/sylvainschmitt/trollExp/blob/logging/rules/postlog.smk)
 
-### [run](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/run.smk)
+* Script: [`postlog.R`](https://github.com/sylvainschmitt/trollExp/blob/logging/scripts/postlog.R)
 
-* Script: [`run.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/run.R)
+Run a TROLL simulation during 10 years after the selective logging simulation.
 
-Run a TROLL simulation for the century with climate from a defined experiment (RCP).
+### [damage](https://github.com/sylvainschmitt/trollExp/blob/logging/rules/damage.smk)
 
-## Outputs
+* Script: [`damage.R`](https://github.com/sylvainschmitt/trollExp/blob/logging/scripts/damage.R)
+
+Apply gap damages to the TROLL simulation 10 years after selective logging.
+
+### [recover](https://github.com/sylvainschmitt/trollExp/blob/logging/rules/recover.smk)
+
+* Script: [`recover.R`](https://github.com/sylvainschmitt/trollExp/blob/logging/scripts/recover.R)
+
+Run a TROLL simulation of recovery after the selective logging simulation and 10-years gap damages.
+
+### Outputs
 
 *Todo.*
 
 # Singularity
 
-The whole workflow currently rely on the [`singularity-troll` image](https://github.com/sylvainschmitt/singularity-troll).
+The workflow currently rely on:
+
+* the [`singularity-troll` image](https://github.com/sylvainschmitt/singularity-troll)
+* the [`singularity-LoggingLab` image](https://github.com/sylvainschmitt/singularity-LoggingLab)
 
 # Data
 
@@ -132,13 +143,3 @@ The whole workflow currently rely on the [`singularity-troll` image](https://git
 _(getEra workflow in preparation)_
 * Currently 2004 to 2022 (can go 1950)
 * VPD from dew point
-
-#### **CORDEX**
-
-* A Coordinated Regional Climate Downscaling Experiment for South America 
-* Access from IPGSL node eased by [`getCordex` workflow](https://github.com/sylvainschmitt/getCordex).
-* Historical from 1950 to 2006, RCP from 2006 to 2100
-* VPD from relative humidity
-* Currently available models: MPI-M-MPI-ESM-MR
-* Currently available RCM: ICTP-RegCM4-7
-* Currently available scenario: historical, RCP 2.6 and RCP 8.5

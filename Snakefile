@@ -1,26 +1,18 @@
-configfile: "config/config.yml"
-# configfile: "config/config_dag.yml"
-
-ruleorder: prepare_spinup > spinup
-ruleorder: prepare_run > run
+configfile: "config/config_dag.yml"
 
 rule all:
    input:
-        expand("results/run/{model}_{rcm}_{exp}",
-                model=config["model"],
-                rcm=config["rcm"],
-                exp=config["scenario"])
+        expand("results/cycle_{cycle}/recover/{scenario}_{duration}",
+                cycle=config["cycles"],
+                scenario=config["scenarios"],
+                duration=config["durations"])
                 
 # Rules #
 
-## Spinup ##
-# Wrong only one spin-up from ERA5-Land for comparison
 include: "rules/spinup_years.py"
 include: "rules/prepare_spinup.py"
 include: "rules/spinup.py"
-
-## Run  ##
-include: "rules/prepare_run.py"
-include: "rules/run.py"
-
-## TROLL outputs ##
+include: "rules/log.py"
+include: "rules/postlog.py"
+include: "rules/damage.py"
+include: "rules/recover.py"

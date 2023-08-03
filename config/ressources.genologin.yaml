@@ -17,19 +17,31 @@ prepare_spinup:
   time: "01:00:00"
   
 spinup:
-  jobname: "troll"
+  jobname: "spinup"
   mem: "10G"
   cpus: 1
   time: "96:00:00"
   
-prepare_run:
-  jobname: "prepare_spinup"
+log:
+  jobname: "log"
   mem: "10G"
   cpus: 1
   time: "01:00:00"
+
+postlog:
+  jobname: "postlog"
+  mem: "10G"
+  cpus: 1
+  time: "24:00:00"
   
-run:
-  jobname: "troll"
+damage:
+  jobname: "damage"
+  mem: "10G"
+  cpus: 1
+  time: "01:00:00"
+
+recover:
+  jobname: "recover"
   mem: "10G"
   cpus: 1
   time: "96:00:00"

@@ -1,7 +1,7 @@
 # data
-model: ["MOHC-HadGEM2-ES", "MPI-M-MPI-ESM", "NCC-NorESM1-M"]
-rcm: ["ICTP-RegCM4-7", "REMO2015"]
-scenario: ["rcp26", "rcp85"]
+scenarios: ["RIL1", "RIL2"]
+durations: [65, 30]
+cycles: 10
 
 # sim pars
 historical: [1970, 2005]
@@ -12,6 +12,7 @@ seed: 42 # for the random selection of years
 # singularity
 # troll: "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.3/sylvainschmitt-singularity-troll.latest.sif"
 troll: "singularity/troll.sif"
+logginglab: "https://github.com/sylvainschmitt/singularity-LoggingLab/releases/download/0.0.1/LoggingLab.sif"
 
 # tests
 test: false
