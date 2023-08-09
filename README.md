@@ -1,4 +1,4 @@
-trollExp - Run a TROLL experiment with climate
+trollExp - Run a regional TROLL experiment
 ================
 Sylvain Schmitt
 May 5, 2023
@@ -6,15 +6,12 @@ May 5, 2023
 - [Installation](#installation)
 - [Usage](#usage)
 - [Workflow](#workflow)
-  - [Spin-up](#spin-up)
-  - [Run](#run)
-  - [Outputs](#outputs)
 - [Singularity](#singularity)
 - [Data](#data)
 
 [`singularity` &
 `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity)
-workflow to run a TROLL experiment with climate.
+workflow to run a regional TROLL experiment.
 
 <figure>
 <img src="dag/dag.svg" alt="Workflow." />
@@ -55,7 +52,7 @@ cd ${GOPATH}/src/github.com/sylabs/singularity && \
 # detect Mutations
 git clone git@github.com:sylvainschmitt/trollExp.git
 cd trollExp
-git checkout climate
+git checkout regional
 ```
 
 # Usage
@@ -79,7 +76,12 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
-## Spin-up
+### [prepare_spatial_data](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spatial_data.py)
+
+- Script:
+  [`prepare_spatial_data.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spatial_data.R)
+
+Prepare soil and climate spatial data for common extent and resolution.
 
 ### [spinup_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/spinup_years.smk)
 
@@ -88,13 +90,27 @@ sbatch job_genologin.sh # run
 
 Define years from the historical period for the spin-up simulations.
 
-### [prepare_spinup](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spinup.smk)
+### [prepare_spinup_climate](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spinup_climate.smk)
 
 - Script:
-  [`prepare_spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spinupe.R)
+  [`prepare_spinup_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spinup_climate.R)
 
-Prepare spin-up data as a TROLL input for a defined model and regional
-climate model (RCM).
+Prepare spin-up climate data as a TROLL input from ERA5-Land data.
+
+### [prepare_spinup_soil](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spinup_soil.smk)
+
+- Script:
+  [`prepare_spinup_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spinup_soil.R)
+
+Prepare spin-up soil data as a TROLL input from METRAADICA soil data.
+
+### [prepare_spinup_species](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spinup_species.smk)
+
+- Script:
+  [`prepare_spinup_species.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spinup_species.R)
+
+Prepare spin-up species data as a TROLL input from gathered functional
+trait data (dummy for the moment).
 
 ### [spinup](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/spinup.smk)
 
@@ -104,27 +120,28 @@ climate model (RCM).
 Run a TROLL simulation for the 600-years spin-up with historical
 climate.
 
-## Run
-
-### [prepare_run](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_run.smk)
+### [summarise](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/summarise.smk)
 
 - Script:
-  [`prepare_run.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_run.R)
+  [`summarise.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/summarise.R)
 
-Prepare run data as a TROLL input for a defined model and regional
-climate model (RCM).
+Summarise a 600 year TROLL simulation in one table to free disk space
+and prepare aggregation.
 
-### [run](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/run.smk)
+### [assemble](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/assemble.smk)
 
 - Script:
-  [`run.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/run.R)
+  [`assemble.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/assemble.R)
 
-Run a TROLL simulation for the century with climate from a defined
-experiment (RCP).
+Assemble all TROLL simulations in a single raster or netcdf file.
 
-## Outputs
+### [plot](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/plot.smk)
 
-*Todo.*
+- Script:
+  [`plot`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/plot.R)
+
+Plot the resulting mean values of variable over the 100 last years and
+build animation of a typical year dynamic.
 
 # Singularity
 
@@ -153,3 +170,17 @@ image](https://github.com/sylvainschmitt/singularity-troll).
 - Currently available models: MPI-M-MPI-ESM-MR
 - Currently available RCM: ICTP-RegCM4-7
 - Currently available scenario: historical, RCP 2.6 and RCP 8.5
+
+#### **METRADICA**
+
+1kmx1km soil texture information for French Guiana. We will use
+following variables for TROLL:
+
+- silt: proportion of silt
+- clay: proportion of clay
+- sand: proportion of sand
+
+### Aggregated species
+
+See [ALT - Biodiversity
+pages](https://main--altpages.netlify.app/biodiviersity-introduction).

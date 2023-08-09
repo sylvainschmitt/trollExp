@@ -1,3 +1,7 @@
+# trollExp - regional 0.1.0.9017
+
+- new workflow only with rules but no scripts (structure only)
+
 # trollExp - climate 0.1.0.9016
 
 - new workflow ready and tested

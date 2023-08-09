@@ -1,5 +1,5 @@
 ---
-title: "trollExp - Run a TROLL experiment with climate"
+title: "trollExp - Run a regional TROLL experiment"
 author: Sylvain Schmitt
 date: May 5, 2023
 output:
@@ -17,7 +17,7 @@ opts_chunk$set(echo = F, message = F, warning = F, fig.height = 6, fig.width = 8
                cache = F, cache.lazy = F)
 ```
 
-[`singularity` & `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity) workflow to run a TROLL experiment with climate.
+[`singularity` & `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity) workflow to run a regional TROLL experiment.
 
 ```{r dag, fig.cap="Workflow."}
 knitr::include_graphics("dag/dag.svg")
@@ -57,7 +57,7 @@ cd ${GOPATH}/src/github.com/sylabs/singularity && \
 # detect Mutations
 git clone git@github.com:sylvainschmitt/trollExp.git
 cd trollExp
-git checkout climate
+git checkout regional
 ```
 
 # Usage
@@ -81,7 +81,11 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
-## Spin-up
+### [prepare_spatial_data](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spatial_data.py)
+
+* Script: [`prepare_spatial_data.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spatial_data.R)
+
+Prepare soil and climate spatial data for common extent and resolution.
 
 ### [spinup_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/spinup_years.smk)
 
@@ -89,11 +93,23 @@ sbatch job_genologin.sh # run
 
 Define years from the historical period for the spin-up simulations.
 
-### [prepare_spinup](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spinup.smk)
+### [prepare_spinup_climate](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spinup_climate.smk)
 
-* Script: [`prepare_spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spinupe.R)
+* Script: [`prepare_spinup_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spinup_climate.R)
 
-Prepare spin-up data as a TROLL input for a defined model and regional climate model (RCM).
+Prepare spin-up climate data as a TROLL input from ERA5-Land data.
+
+### [prepare_spinup_soil](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spinup_soil.smk)
+
+* Script: [`prepare_spinup_climate.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spinup_soil.R)
+
+Prepare spin-up soil data as a TROLL input from METRAADICA soil data.
+
+### [prepare_spinup_species](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_spinup_species.smk)
+
+* Script: [`prepare_spinup_species.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_spinup_species.R)
+
+Prepare spin-up species data as a TROLL input from gathered functional trait data (dummy for the moment).
 
 ### [spinup](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/spinup.smk)
 
@@ -101,23 +117,24 @@ Prepare spin-up data as a TROLL input for a defined model and regional climate m
 
 Run a TROLL simulation for the 600-years spin-up with historical climate.
 
-## Run
+### [summarise](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/summarise.smk)
 
-### [prepare_run](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_run.smk)
+* Script: [`summarise.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/summarise.R)
 
-* Script: [`prepare_run.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_run.R)
+Summarise a 600 year TROLL simulation in one table to free disk space and prepare aggregation.
 
-Prepare run data as a TROLL input for a defined model and regional climate model (RCM).
+### [assemble](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/assemble.smk)
 
-### [run](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/run.smk)
+* Script: [`assemble.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/assemble.R)
 
-* Script: [`run.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/run.R)
+Assemble all TROLL simulations in a single raster or netcdf file.
 
-Run a TROLL simulation for the century with climate from a defined experiment (RCP).
+### [plot](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/plot.smk)
 
-## Outputs
+* Script: [`plot`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/plot.R)
 
-*Todo.*
+Plot the resulting mean values of variable over the 100 last years
+and build animation of a typical year dynamic.
 
 # Singularity
 
@@ -142,3 +159,63 @@ _(getEra workflow in preparation)_
 * Currently available models: MPI-M-MPI-ESM-MR
 * Currently available RCM: ICTP-RegCM4-7
 * Currently available scenario: historical, RCP 2.6 and RCP 8.5
+
+
+#### **METRADICA**
+
+1kmx1km soil texture information for French Guiana. We will use
+following variables for TROLL:
+
+- silt: proportion of silt
+- clay: proportion of clay
+- sand: proportion of sand
+
+### Aggregated species
+
+See [ALT - Biodiversity pages](https://main--altpages.netlify.app/biodiviersity-introduction).
+
+```{r, eval=FALSE}
+library(terra)
+climate <- rast("data/climate/ERA5land.nc")
+soil <- rast(
+  lapply(list.files("data/soil/", full.names = T), rast)
+)
+names(soil) <- c("clay", "sand", "silt")
+soil <- project(soil, climate$u10_1) %>% 
+  mask(climate$u10_1)
+climate <- mask(climate, soil)
+
+plot(soil)
+plot(climate[[1:4]])
+
+soil_df <- as.data.frame(soil, xy = TRUE) %>% 
+  mutate(cell = 1:n())
+
+climate_df <- as.data.frame(climate, xy = TRUE) %>% 
+  mutate(cell = 1:n()) %>% 
+  gather(variable, value, -x, -y, -cell) %>% 
+  separate(variable, c("variable", "time"), convert = TRUE) %>% 
+  mutate(time = time(climate)[time]) %>% 
+  pivot_wider(values_from = value, names_from = variable) %>% 
+  arrange(cell, time)
+
+library(gganimate)
+
+g <- climate_df %>% 
+  left_join(soil_df) %>% 
+  gather(variable, value, -x, -y, -cell, -time) %>% 
+  group_by(variable) %>% 
+  mutate(value = scale(value)) %>% 
+  ggplot(aes(x, y, fill = value)) +
+  geom_raster() +
+  facet_wrap(~ variable) +
+  scale_fill_viridis_c("Scaled value") +
+  coord_equal() +
+  theme_bw() +
+  xlab("") + ylab("") +
+  transition_time(time) +
+  labs(title = '{frame_time}')
+
+anim_save("test.gif", g)
+```
+

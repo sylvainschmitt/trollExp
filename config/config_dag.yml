@@ -1,10 +1,7 @@
-# data
-model: ["NCC-NorESM1-M"]
-rcm: ["REMO2015"]
-scenario: ["rcp26", "rcp85"]
-
 # sim pars
-historical: [1970, 2005]
+spatial_res_km: 10
+n_cells: 2
+historical: [1950, 2022]
 spinup: 600
 verbose: yes
 seed: 42 # for the random selection of years
