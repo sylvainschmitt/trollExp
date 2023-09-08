@@ -4,26 +4,20 @@ __default__:
   cpus: 1
   time: "48:00:00"
   
-get_data:
-  jobname: "get_data"
+rename:
+  jobname: "rename"
+  mem: "1G"
+  cpus: 1
+  time: "01:00:00"
+  
+format:
+  jobname: "format"
   mem: "1G"
   cpus: 1
   time: "01:00:00"
 
 prepare_spinup:
   jobname: "prepare_spinup"
-  mem: "10G"
-  cpus: 1
-  time: "01:00:00"
-  
-prepare_spinup_era:
-  jobname: "prepare_spinup_era"
-  mem: "10G"
-  cpus: 1
-  time: "01:00:00"
-  
-prepare_spinup_raw:
-  jobname: "prepare_spinup_raw"
   mem: "10G"
   cpus: 1
   time: "01:00:00"
@@ -36,18 +30,6 @@ spinup:
   
 prepare_run:
   jobname: "prepare_run"
-  mem: "10G"
-  cpus: 1
-  time: "01:00:00"
-  
-prepare_run_era:
-  jobname: "prepare_spiprepare_run_eranup_era"
-  mem: "10G"
-  cpus: 1
-  time: "01:00:00"
-  
-prepare_run_raw:
-  jobname: "prepare_run_raw"
   mem: "10G"
   cpus: 1
   time: "01:00:00"

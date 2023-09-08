@@ -1,5 +1,4 @@
 # data
-adress: "https://dapds00.nci.org.au/thredds/fileServer/ks32/CLEX_Data/PLUMBER2/v1-0/"
 sites: ["GF-Guy", "BR-Sa1", "BR-Sa3"]
 
 # sim pars
@@ -12,5 +11,5 @@ seed: 42 # for the random selection of years
 troll: "singularity/troll.sif"
 
 # tests
-test: true
+test: false
 test_years: 0.1
