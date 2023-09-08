@@ -1,32 +1,37 @@
-trollExp - Run a TROLL experiment with phenology
-================
-Sylvain Schmitt
-June 26, 2023
+# trollExp - Run a TROLL experiment with phenology
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Workflow](#workflow)
-  - [Spin-up](#spin-up)
-  - [Run](#run)
-- [Singularity](#singularity)
-- [Data](#data)
+Sylvain Schmitt June 26, 2023
 
-[`singularity` &
-`snakemake`](https://github.com/sylvainschmitt/snakemake_singularity)
-workflow to run a TROLL experiment with phenology.
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [Workflow](#workflow)
+    -   [Data](#data)
+    -   [Spin-up](#spin-up)
+    -   [Run](#run)
+-   [Singularity](#singularity)
+-   [Data](#data-1)
+
+[`singularity` & `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity) workflow to run a TROLL experiment with phenology.
 
 <figure>
-<img src="dag/dag.svg" alt="Workflow." />
-<figcaption aria-hidden="true">Workflow.</figcaption>
+
+<img src="dag/dag.svg" alt="Workflow."/>
+
+<figcaption aria-hidden="true">
+
+Workflow.
+
+</figcaption>
+
 </figure>
 
-# Installation
+# Installation {#installation}
 
-- [x] Python ≥3.5
-- [x] Snakemake ≥5.24.1
-- [x] Golang ≥1.15.2
-- [x] Singularity ≥3.7.3
-- [x] This workflow
+-   [x] Python ≥3.5
+-   [x] Snakemake ≥5.24.1
+-   [x] Golang ≥1.15.2
+-   [x] Singularity ≥3.7.3
+-   [x] This workflow
 
 ``` bash
 # Python
@@ -54,10 +59,10 @@ cd ${GOPATH}/src/github.com/sylabs/singularity && \
 # detect Mutations
 git clone git@github.com:sylvainschmitt/trollExp.git
 cd trollExp
-git checkout pheno-plumber
+git checkout pheno-fluxnet
 ```
 
-# Usage
+# Usage {#usage}
 
 ### Locally
 
@@ -75,92 +80,52 @@ snakemake -np # dry run
 sbatch job_genologin.sh # run
 ```
 
-# Workflow
+# Workflow {#workflow}
 
-## Spin-up
+## Data {#data}
 
-### [get_data](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/get_fluxes.py)
+### [rename](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/rename.py)
 
-Download data from PLUMBER2, the flux tower dataset tailored for land
-model evaluation (<https://essd.copernicus.org/articles/14/449/2022/>).
+Rename and copy FLUXNET raw files.
 
-### [prepare_spinup](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_spinup.py)
+### [format](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/format.py)
 
-- Script:
-  [`prepare_spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_spinup.R)
+-   Script: [`format.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/format.R)
 
-Prepare climate data as a TROLL input for a defined model and regional
-climate model (RCM) for the spin-up.
+Format FLUXNET raw data into TROLL climate input.
 
-### [prepare_spinup_era](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_spinup_era.py)
+## Spin-up {#spin-up}
 
-- Script:
-  [`prepare_spinup_era.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_spinup_era.R)
+### [prepare_spinup](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/prepare_spinup.py)
 
-Prepare climate data as a TROLL input for a defined model and regional
-climate model (RCM) for the spin-up with ERA5-Land data.
+-   Script: [`prepare_spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/prepare_spinup.R)
 
-### [prepare_spinup_raw](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_spinup_raw.py)
+Prepare climate data as a TROLL input for a 600-years spin-up.
 
-- Script:
-  [`prepare_spinup_raw.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_spinup_raw.R)
+### [spinup](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/spinup.py)
 
-Prepare climate data as a TROLL input for a defined model and regional
-climate model (RCM) for the spin-up with raw eddy-tower data.
+-   Script: [`spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/spinup.R)
 
-### [spinup](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/spinup.py)
+Run a TROLL simulation for a 600-years spin-up.
 
-- Script:
-  [`spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/spinup.R)
+## Run {#run}
 
-Run a TROLL simulation for the 600-years spin-up.
+### [prepare_run](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/prepare_run.py)
 
-## Run
+-   Script: [`prepare_run.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/prepare_run.R)
 
-### [prepare_run](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_run.py)
+Prepare climate data as a TROLL for the run.
 
-- Script:
-  [`prepare_run.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_run.R)
+### [run](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/run.py)
 
-Prepare climate data as a TROLL input for a defined model and regional
-climate model (RCM) for the run.
-
-### [prepare_run_era](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_run_era.py)
-
-- Script:
-  [`prepare_run_era.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_run_era.R)
-
-Prepare climate data as a TROLL input for a defined model and regional
-climate model (RCM) for the run with ERA5-Land data.
-
-### [prepare_run_raw](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/prepare_run_raw.py)
-
-- Script:
-  [`prepare_run_raw.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/prepare_run_raw.R)
-
-Prepare climate data as a TROLL input for a defined model and regional
-climate model (RCM) for the run with raw eddy-tower data.
-
-### [run](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/rules/run.py)
-
-- Script:
-  [`run.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-plumber/scripts/run.R)
+-   Script: [`run.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/run.R)
 
 Run a TROLL simulation.
 
-# Singularity
+# Singularity {#singularity}
 
-The whole workflow currently rely on the [`singularity-troll`
-image](https://github.com/sylvainschmitt/singularity-troll).
+The whole workflow currently rely on the [`singularity-troll` image](https://github.com/sylvainschmitt/singularity-troll).
 
-# Data
+# Data {#data-1}
 
-#### **`PLUMBER2`**
-
-- Sites:
-  - GF-Guy (Guyaflux)
-  - BR-Sa3 (Santarem)
-- Variables: GPP, LAI (Copernicus & MODIS), LE
-- Periods: 2001:2003 (BR-Sa3) & 2004:2014 (GF-Guy)
-- Origin: EddyFlux & satellites
-- Link: <https://essd.copernicus.org/articles/14/449/2022/>
+-   [FLUXNET 2015](https://fluxnet.org/data/fluxnet2015-dataset/)

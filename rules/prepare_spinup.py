@@ -1,7 +1,6 @@
 rule prepare_spinup:
     input:
-        met="results/data/{site}_FLUXNET2015_Met.nc",
-        flux="results/data/{site}_FLUXNET2015_Flux.nc"
+        "results/data/{site}_climate.tsv",
     output:
         tab="results/spinup/{site}_climate.tsv",
         fig="results/spinup/{site}_climate.png"
