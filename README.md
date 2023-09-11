@@ -8,6 +8,7 @@ May 5, 2023
 - [Workflow](#workflow)
   - [Spin-up](#spin-up)
   - [Run](#run)
+  - [Post](#post)
   - [Outputs](#outputs)
 - [Singularity](#singularity)
 - [Data](#data)
@@ -121,6 +122,31 @@ climate model (RCM).
 
 Run a TROLL simulation for the century with climate from a defined
 experiment (RCP).
+
+## Post
+
+### [post_years](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/post_years.smk)
+
+- Script:
+  [`post_years.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/post_years.R)
+
+Define years from the projection period for the post-run simulations.
+
+### [prepare_post](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/prepare_post.smk)
+
+- Script:
+  [`prepare_post.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/prepare_post.R)
+
+Prepare post-run data as a TROLL input for a defined model and regional
+climate model (RCM).
+
+### [post](https://github.com/sylvainschmitt/trollExp/blob/climate/rules/post.smk)
+
+- Script:
+  [`post.R`](https://github.com/sylvainschmitt/trollExp/blob/climate/scripts/post.R)
+
+Run a TROLL simulation for the century post climate forcing with climate
+from a defined experiment (RCP).
 
 ## Outputs
 
