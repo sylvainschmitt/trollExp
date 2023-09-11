@@ -1,17 +1,18 @@
 rule spinup:
     input:
-        "results/soil/soil.tsv"
+        species="results/spinup/coms.tsv"
     output:
-        directory("results/spinup/{site}")
+        directory("results/spinup/SR{richness}_REP{rep}")
     log:
-        "results/logs/spinup_{site}.log"
+        "results/logs/spinup_SR{richness}_REP{rep}.log"
     benchmark:
-        "results/benchmarks/spinup_{site}.benchmark.txt"
+        "results/benchmarks/spinup_SR{richness}_REP{rep}.benchmark.txt"
     singularity:
         config["troll"]
     threads: 1
     params:
-        site="{site}",
+        richness="{richness}",
+        rep="{rep}",
         spinup=config["spinup"],
         seed=config["seed"],
         verbose=config["verbose"],

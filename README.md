@@ -1,4 +1,4 @@
-trollExp - Run a TROLL experiment with soil
+trollExp - Run a TROLL experiment with biodiversity
 ================
 Sylvain Schmitt
 May 16, 2023
@@ -11,7 +11,7 @@ May 16, 2023
 
 [`singularity` &
 `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity)
-workflow to run a TROLL experiment with soil.
+workflow to run a TROLL experiment with biodiversity
 
 <figure>
 <img src="dag/dag.svg" alt="Workflow." />
@@ -52,7 +52,7 @@ cd ${GOPATH}/src/github.com/sylabs/singularity && \
 # detect Mutations
 git clone git@github.com:sylvainschmitt/trollExp.git
 cd trollExp
-git checkout soil
+git checkout biodiv
 ```
 
 # Usage
@@ -62,7 +62,7 @@ git checkout soil
 ``` bash
 snakemake -np -j 1 # dry run
 snakemake --dag | dot -Tsvg > dag/dag.svg # dag
-snakemake -j 1 --use-singularity --singularity-args "\-e" # run
+snakemake -j 1 --use-singularity # run
 ```
 
 ### HPC
@@ -75,17 +75,17 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
-### [extract_soil](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/extract_soil.py)
+### [sample_coms](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/sample_coms.py)
 
 - Script:
-  [`extract_soil.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/extract_soil.R)
+  [`sample_coms.R`](https://github.com/sylvainschmitt/trollExp/blob/biodiv/scripts/sample_coms.R)
 
-Extract soil data for given plot.
+Sample communities for the biodiviersity experiment.
 
-### [spinup](https://github.com/sylvainschmitt/trollExp/blob/soil/rules/spinup.py)
+### [spinup](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/spinup.py)
 
 - Script:
-  [`spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/soil/scripts/spinup.R)
+  [`spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/biodiv/scripts/spinup.R)
 
 Run a TROLL spin-up simulation (e.g. creation of a 600-years old mature
 forest).
@@ -97,29 +97,12 @@ image](https://github.com/sylvainschmitt/singularity-troll).
 
 # Data
 
-#### **METRADICA**
+Combined functional trait data from:
 
-1kmx1km soil texture information for French Guiana. We will use
-following variables for TROLL:
-
-- silt: proportion of silt
-- clay: proportion of clay
-- sand: proportion of sand
-
-#### **SoilGrids**
-
-250x250m soil information for the globe with quantified spatial
-uncertainty ([Poggio et
-al. 2021](https://soil.copernicus.org/articles/7/217/2021/)). Available
-[online](https://files.isric.org/soilgrids/latest/data/) with an example
-[R
-script](https://git.wur.nl/isric/soilgrids/soilgrids.notebooks/-/blob/master/markdown/webdav_from_R.md).
-We will use following variables for TROLL:
-
-- silt: proportion of silt
-- clay: proportion of clay
-- sand: proportion of sand
-- soc: soil organic content
-- bdod: dry bulk density
-- phh20: hydrogen ion activity in water  
-- cec: cation exchange capacity at ph 7
+- Maréchaux et al., (2015)
+- Santiago et al., (2018)
+- Vleminckx et al., (2021)
+- Guillemot et al., (2022)
+- Jucker et al., (2022)
+- Krebber et al., (in prep)
+- TROLL V4

@@ -1,6 +1,6 @@
 # species
-richness: [25, 125, 250, 500]
-repetitions: [1,2 ,3, 4]
+richness: [500]
+repetitions: [1]
 
 # sim pars
 spinup: 600
@@ -12,5 +12,5 @@ seed: 42 # for the random selection of years
 troll: "singularity/troll.sif"
 
 # tests
-test: false
+test: true
 test_years: 0.1

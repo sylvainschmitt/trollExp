@@ -4,18 +4,20 @@ sink(log_file, append = TRUE, type = "message")
 sink(log_file, append = TRUE)
 
 # snakemake vars
-filein <- snakemake@input[[1]]
+filein <- snakemake@input[["species"]]
 folderout <- snakemake@output[[1]]
-site <- as.character(snakemake@params$site)
+sr <- as.numeric(snakemake@params$richness)
+rep <- as.numeric(snakemake@params$rep)
 verbose <- snakemake@params$verbose
 spinup <- snakemake@params$spinup
 test <- snakemake@params$test
 test_years <- snakemake@params$test_years
 
 # test
-# filein <- "results/soil/soil.tsv"
-# folderout <- "results/simulations/Acarouany"
-# site <- "Acarouany"
+# filein <- "results/spinup/coms.tsv"
+# folderout <- "results/simulations/SR500_REP1"
+# sr <- 500
+# rep <- 1
 # verbose <- TRUE
 # spinup <- 600
 # test <- TRUE
@@ -27,40 +29,30 @@ library(rcontroll)
 library(vroom)
 
 # code
-path <- gsub(site, "", folderout)
+name <- paste0("SR", sr, "_REP", rep)
+path <- gsub(name, "", folderout)
 
-data("TROLLv4_species")
 data("TROLLv4_climate")
 data("TROLLv4_dailyvar")
 data("TROLLv4_pedology")
 
-pedo <- TROLLv4_pedology %>% 
-  select(layer_thickness, proportion_Silt,
-         proportion_Clay, proportion_Sand)
-
-if(site != "default"){
-  data <- vroom(filein) %>% 
-    filter(Forest == site)
-  pedo <- pedo %>% 
-    mutate(proportion_Silt = data$silt,
-           proportion_Clay = data$clay, 
-           proportion_Sand = data$sand)
-}
+species <- vroom(filein) %>% 
+  filter(richness == sr, repetition == rep) %>% 
+  select(-richness, -repetition) %>% 
+  mutate(s_regionalfreq = 1/n())
 
 n <- as.numeric(spinup)*365
 if(test)
   n <- round(test_years*365)
 
-print(n)
-
 sim <- troll(
-  name = site,
+  name = name,
   path = path,
-  global = generate_parameters(nbiter = n, WATER_RETENTION_CURVE = 0),
-  species = TROLLv4_species,
+  global = generate_parameters(nbiter = n),
+  species = species,
   climate = TROLLv4_climate,
   daily = TROLLv4_dailyvar,
-  pedology = pedo,
+  pedology = TROLLv4_pedology,
   load = FALSE,
   verbose = verbose,
   overwrite = TRUE

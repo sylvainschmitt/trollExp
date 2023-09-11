@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --time=96:00:00
-#SBATCH -J trollSoil
-#SBATCH -o trollSoil.%N.%j.out
-#SBATCH -e trollSoil.%N.%j.err
+#SBATCH -J trollBiodiv
+#SBATCH -o trollBiodivl.%N.%j.out
+#SBATCH -e trollBiodiv.%N.%j.err
 #SBATCH --mem=5G
 #SBATCH --cpus-per-task=1
 #SBATCH --mail-type=ALL
