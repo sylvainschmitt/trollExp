@@ -2,10 +2,18 @@
 richness: [25, 125, 250, 500]
 repetitions: [1,2 ,3, 4]
 
-# sim pars
+# clim
+model: ["NCC-NorESM1-M"]
+rcm: ["REMO2015"]
+scenario: ["rcp26", "rcp85"]
+
+# pars
+historical: [1970, 2005]
 spinup: 600
 verbose: yes
 seed: 42 # for the random selection of years
+post_ref: 10
+post: 100
 
 # singularity
 # troll: "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.3/sylvainschmitt-singularity-troll.latest.sif"

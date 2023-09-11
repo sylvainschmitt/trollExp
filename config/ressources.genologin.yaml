@@ -9,9 +9,46 @@ sample_coms:
   mem: "10G"
   cpus: 1
   time: "01:00:00"
+  
+spinup_years:
+  jobname: "spinup_years"
+  mem: "4"
+  cpus: 1
+  time: "01:00:00"
+
+prepare_spinup:
+  jobname: "prepare_spinup"
+  mem: "10G"
+  cpus: 1
+  time: "01:00:00"
 
 spinup:
   jobname: "spinup"
   mem: "10G"
   cpus: 1
   time: "96:00:00"
+
+prepare_run:
+  jobname: "prepare_spinup"
+  mem: "10G"
+  cpus: 1
+  time: "01:00:00"
+  
+run:
+  jobname: "run"
+  mem: "10G"
+  cpus: 1
+  time: "96:00:00"
+  
+prepare_post:
+  jobname: "prepare_post"
+  mem: "10G"
+  cpus: 1
+  time: "01:00:00"
+  
+post:
+  jobname: "post"
+  mem: "10G"
+  cpus: 1
+  time: "96:00:00"
+  

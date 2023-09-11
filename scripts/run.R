@@ -4,43 +4,36 @@ sink(log_file, append = TRUE, type = "message")
 sink(log_file, append = TRUE)
 
 # snakemake vars
-climate_file <- snakemake@input[["climate"]]
-species_file <- snakemake@input[["species"]]
+filein <- snakemake@input[[1]]
+folderin <- snakemake@input[[2]]
 folderout <- snakemake@output[[1]]
 sr <- as.numeric(snakemake@params$richness)
 rep <- as.numeric(snakemake@params$rep)
+model <- as.character(snakemake@params$model)
+rcm <- as.character(snakemake@params$rcm)
+exp <- as.character(snakemake@params$exp)
 verbose <- snakemake@params$verbose
-spinup <- snakemake@params$spinup
 test <- snakemake@params$test
 test_years <- snakemake@params$test_years
 
 # test
-# filein <- "results/spinup/coms.tsv"
-# folderout <- "results/simulations/SR500_REP1"
-# sr <- 500
-# rep <- 1
+# filein <- "results/simulations/NCC-NorESM1-M_REMO2015_rcp85_climate.tsv"
 # verbose <- TRUE
-# spinup <- 600
 # test <- TRUE
 # test_years <- 0.1
 
 # libraries
-library(tidyverse) 
+library(tidyverse)
 library(rcontroll)
 library(vroom)
 
 # code
-name <- paste0("SR", sr, "_REP", rep, "_era")
+sp_name <- paste0("SR", sr, "_REP", rep)
+clim_name <- paste0(model, "_", rcm, "_", exp)
+name <- paste0(sp_name, "_", clim_name)
 path <- gsub(name, "", folderout)
 
-data("TROLLv4_pedology")
-
-species <- vroom(species_file) %>% 
-  filter(richness == sr, repetition == rep) %>% 
-  select(-richness, -repetition) %>% 
-  mutate(s_regionalfreq = 1/n())
-
-data <- vroom(climate_file,
+data <- vroom(filein,
               col_types = list(rainfall = "numeric")) %>% 
   mutate(snet = ifelse(snet <= 1.1, 1.1, snet)) %>% 
   mutate(vpd = ifelse(vpd <= 0.011, 0.011, vpd)) %>% 
@@ -49,18 +42,23 @@ data <- vroom(climate_file,
 clim <- generate_climate(data)
 day <- generate_dailyvar(data)
 
-n <- as.numeric(spinup)*365
+n <- as.numeric(nrow(clim))
 if(test)
   n <- round(test_years*365)
+
+spinup <-  load_output(name = paste0(sp_name, "_era"),
+                       path = folderin)
 
 sim <- troll(
   name = name,
   path = path,
-  global = generate_parameters(nbiter = n),
-  species = species,
+  global = update_parameters(spinup, nbiter = n),
+  species = spinup@inputs$species, 
   climate = clim,
   daily = day,
-  pedology = TROLLv4_pedology,
+  pedology = spinup@inputs$pedology, 
+  forest = get_forest(spinup),
+  soil = get_soil(spinup), 
   load = FALSE,
   verbose = verbose,
   overwrite = TRUE

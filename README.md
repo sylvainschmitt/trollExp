@@ -1,4 +1,4 @@
-trollExp - Run a TROLL experiment with biodiversity
+trollExp - Run a TROLL experiment with biodiversity & climate
 ================
 Sylvain Schmitt
 May 16, 2023
@@ -6,12 +6,15 @@ May 16, 2023
 - [Installation](#installation)
 - [Usage](#usage)
 - [Workflow](#workflow)
+  - [Spin-up](#spin-up)
+  - [Run](#run)
+  - [Post](#post)
 - [Singularity](#singularity)
 - [Data](#data)
 
 [`singularity` &
 `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity)
-workflow to run a TROLL experiment with biodiversity
+workflow to run a TROLL experiment with biodiversity & climate.
 
 <figure>
 <img src="dag/dag.svg" alt="Workflow." />
@@ -75,6 +78,8 @@ sbatch job_genologin.sh # run
 
 # Workflow
 
+## Spin-up
+
 ### [sample_coms](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/sample_coms.py)
 
 - Script:
@@ -82,13 +87,71 @@ sbatch job_genologin.sh # run
 
 Sample communities for the biodiviersity experiment.
 
-### [spinup](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/spinup.py)
+### [spinup_years](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/spinup_years.smk)
+
+- Script:
+  [`spinup_years.R`](https://github.com/sylvainschmitt/trollExp/blob/biodiv/scripts/spinup_years.R)
+
+Define years from the historical period for the spin-up simulations.
+
+### [prepare_spinup](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/prepare_spinup.smk)
+
+- Script:
+  [`prepare_spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/biodiv/scripts/prepare_spinupe.R)
+
+Prepare spin-up data as a TROLL input for a defined model and regional
+climate model (RCM).
+
+### [spinup](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/spinup.smk)
 
 - Script:
   [`spinup.R`](https://github.com/sylvainschmitt/trollExp/blob/biodiv/scripts/spinup.R)
 
-Run a TROLL spin-up simulation (e.g. creation of a 600-years old mature
-forest).
+Run a TROLL simulation for the 600-years spin-up with historical climate
+and the specified community.
+
+## Run
+
+### [prepare_run](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/prepare_run.smk)
+
+- Script:
+  [`prepare_run.R`](https://github.com/sylvainschmitt/trollExp/blob/biodiv/scripts/prepare_run.R)
+
+Prepare run data as a TROLL input for a defined model and regional
+climate model (RCM).
+
+### [run](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/run.smk)
+
+- Script:
+  [`run.R`](https://github.com/sylvainschmitt/trollExp/blob/biodiv/scripts/run.R)
+
+Run a TROLL simulation for the century with climate from a defined
+experiment (RCP) and the specified community..
+
+## Post
+
+### [post_years](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/post_years.smk)
+
+- Script:
+  [`post_years.R`](https://github.com/sylvainschmitt/trollExp/blob/biodiv/scripts/post_years.R)
+
+Define years from the projection period for the post-run simulations.
+
+### [prepare_post](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/prepare_post.smk)
+
+- Script:
+  [`prepare_post.R`](https://github.com/sylvainschmitt/trollExp/blob/biodiv/scripts/prepare_post.R)
+
+Prepare post-run data as a TROLL input for a defined model and regional
+climate model (RCM).
+
+### [post](https://github.com/sylvainschmitt/trollExp/blob/biodiv/rules/post.smk)
+
+- Script:
+  [`post.R`](https://github.com/sylvainschmitt/trollExp/blob/biodiv/scripts/post.R)
+
+Run a TROLL simulation for the century post climate forcing with climate
+from a defined experiment (RCP) and the specified community.
 
 # Singularity
 
@@ -96,6 +159,29 @@ The whole workflow currently rely on the [`singularity-troll`
 image](https://github.com/sylvainschmitt/singularity-troll).
 
 # Data
+
+#### **ERA5-Land**
+
+- A global reanalysis dataset (Munoz-Sabater et al. 2021)
+- Access from Copernicus eased by
+  [`rcontroll`](https://sylvainschmitt.github.io/rcontroll/articles/climate.html)
+  *(getEra workflow in preparation)*
+- Currently 2004 to 2022 (can go 1950)
+- VPD from dew point
+
+#### **CORDEX**
+
+- A Coordinated Regional Climate Downscaling Experiment for South
+  America
+- Access from IPGSL node eased by [`getCordex`
+  workflow](https://github.com/sylvainschmitt/getCordex).
+- Historical from 1950 to 2006, RCP from 2006 to 2100
+- VPD from relative humidity
+- Currently available models: MPI-M-MPI-ESM-MR
+- Currently available RCM: ICTP-RegCM4-7
+- Currently available scenario: historical, RCP 2.6 and RCP 8.5
+
+#### **Species**
 
 Combined functional trait data from:
 

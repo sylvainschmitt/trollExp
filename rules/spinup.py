@@ -1,8 +1,9 @@
 rule spinup:
     input:
+        climate="results/spinup/era_climate.tsv",
         species="results/spinup/coms.tsv"
     output:
-        directory("results/spinup/SR{richness}_REP{rep}")
+        directory("results/spinup/SR{richness}_REP{rep}_era")
     log:
         "results/logs/spinup_SR{richness}_REP{rep}.log"
     benchmark:
