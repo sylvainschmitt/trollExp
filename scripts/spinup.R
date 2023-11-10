@@ -4,7 +4,9 @@ sink(log_file, append = TRUE, type = "message")
 sink(log_file, append = TRUE)
 
 # snakemake vars
-filein <- snakemake@input[[1]]
+climate <- snakemake@input[[1]]
+species <- snakemake@input[[2]]
+soil <- snakemake@input[[3]]
 folderout <- snakemake@output[[1]]
 site <- as.character(snakemake@params$site)
 verbose <- snakemake@params$verbose
@@ -28,10 +30,7 @@ library(vroom)
 name <- site
 path <- gsub(name, "", folderout)
 
-data("TROLLv4_species")
-data("TROLLv4_pedology")
-
-data <- vroom(filein,
+data <- vroom(climate,
               col_types = list(rainfall = "numeric")) %>% 
   mutate(snet = ifelse(snet <= 1.1, 1.1, snet)) %>% 
   mutate(vpd = ifelse(vpd <= 0.011, 0.011, vpd)) %>% 
@@ -39,6 +38,9 @@ data <- vroom(filein,
 
 clim <- generate_climate(data)
 day <- generate_dailyvar(data)
+
+species <- vroom(species)
+soil <- vroom(soil)
 
 n <- as.numeric(nrow(clim))
 if(test)
@@ -48,10 +50,10 @@ sim <- troll(
   name = name,
   path = path,
   global = generate_parameters(nbiter = n),
-  species = TROLLv4_species,
+  species = species,
   climate = clim,
   daily = day,
-  pedology = TROLLv4_pedology,
+  pedology = soil,
   load = FALSE,
   verbose = verbose,
   overwrite = TRUE

@@ -1,8 +1,12 @@
 rule format:
     input:
-        "results/data/{site}_raw.csv",
+        "data/{site}_climate_raw.csv",
+        "data/{site}_species_raw.tsv",
+        "data/{site}_soil_raw.tsv"
     output:
-        "results/data/{site}_climate.tsv"
+        "results/data/{site}_climate.tsv",
+        "results/data/{site}_species.tsv",
+        "results/data/{site}_soil.tsv"
     log:
         "results/logs/format_{site}.log"
     benchmark:

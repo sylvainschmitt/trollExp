@@ -26,5 +26,4 @@ report.html
 *.csv
 *.sif
 img
-data
-
+*.html

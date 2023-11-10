@@ -1,3 +1,7 @@
+# trollExp - pheno 0.1.0.9019
+
+-   adding species and soil and renaming
+
 # trollExp - pheno-fluxnet 0.1.0.9018
 
 -   switching to fluxnet 2015 dataset with an additional site

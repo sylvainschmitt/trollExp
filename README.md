@@ -11,7 +11,8 @@ Sylvain Schmitt June 26, 2023
 -   [Singularity](#singularity)
 -   [Data](#data-1)
 
-[`singularity` & `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity) workflow to run a TROLL experiment with phenology.
+[`singularity` & `snakemake`](https://github.com/sylvainschmitt/snakemake_singularity) 
+workflow to run a TROLL experiment with phenology.
 
 <figure>
 
@@ -25,7 +26,7 @@ Workflow.
 
 </figure>
 
-# Installation {#installation}
+# Installation
 
 -   [x] Python ≥3.5
 -   [x] Snakemake ≥5.24.1
@@ -62,7 +63,7 @@ cd trollExp
 git checkout pheno-fluxnet
 ```
 
-# Usage {#usage}
+# Usage
 
 ### Locally
 
@@ -80,9 +81,9 @@ snakemake -np # dry run
 sbatch job_genologin.sh # run
 ```
 
-# Workflow {#workflow}
+# Workflow
 
-## Data {#data}
+## Data
 
 ### [rename](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/rename.py)
 
@@ -92,9 +93,9 @@ Rename and copy FLUXNET raw files.
 
 -   Script: [`format.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/format.R)
 
-Format FLUXNET raw data into TROLL climate input.
+Format FLUXNET raw, species and soil data into TROLL inputs.
 
-## Spin-up {#spin-up}
+## Spin-up
 
 ### [prepare_spinup](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/prepare_spinup.py)
 
@@ -108,7 +109,7 @@ Prepare climate data as a TROLL input for a 600-years spin-up.
 
 Run a TROLL simulation for a 600-years spin-up.
 
-## Run {#run}
+## Run
 
 ### [prepare_run](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/prepare_run.py)
 
@@ -122,10 +123,12 @@ Prepare climate data as a TROLL for the run.
 
 Run a TROLL simulation.
 
-# Singularity {#singularity}
+# Singularity
 
 The whole workflow currently rely on the [`singularity-troll` image](https://github.com/sylvainschmitt/singularity-troll).
 
-# Data {#data-1}
+# Data
 
 -   [FLUXNET 2015](https://fluxnet.org/data/fluxnet2015-dataset/)
+-   [Soil gathered by Isabelle](https://main--altpages.netlify.app/pheno#soils)
+-   [Imputed species traits](https://main--altpages.netlify.app/biod-imp)

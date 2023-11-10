@@ -1,6 +1,8 @@
 rule spinup:
     input:
-        "results/spinup/{site}_climate.tsv"
+        "results/spinup/{site}_climate.tsv",
+        "results/data/{site}_species.tsv",
+        "results/data/{site}_soil.tsv"
     output:
         directory("results/spinup/{site}")
     log:
