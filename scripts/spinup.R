@@ -36,8 +36,16 @@ data <- vroom(climate,
   mutate(vpd = ifelse(vpd <= 0.011, 0.011, vpd)) %>% 
   mutate(ws = ifelse(ws <= 0.11, 0.11, ws))
 
-clim <- generate_climate(data)
-day <- generate_dailyvar(data)
+# currently hardcoded should be put in config.yml
+dstart = if_else(site == "Tapajos", 6, 7)
+dend = if_else(site == "Tapajos", 18, 19)
+
+clim <- generate_climate(data, 
+                         daytime_start = dstart, 
+                         daytime_end = dend)
+day <- generate_dailyvar(data, 
+                         daytime_start = dstart, 
+                         daytime_end = dend)
 
 species <- vroom(species)
 soil <- vroom(soil)

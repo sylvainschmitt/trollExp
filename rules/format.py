@@ -1,6 +1,6 @@
 rule format:
     input:
-        "data/{site}_climate_raw.csv",
+        "data/climate_raw.tsv",
         "data/{site}_species_raw.tsv",
         "data/{site}_soil_raw.tsv"
     output:

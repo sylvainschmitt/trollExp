@@ -10,21 +10,20 @@ soil_raw <- snakemake@input[[3]]
 climate <- snakemake@output[[1]]
 species <- snakemake@output[[2]]
 soil <- snakemake@output[[3]]
-site <- as.character(snakemake@params$site)
+sit <- as.character(snakemake@params$site)
 
 # test
-# raw <- "results/data/BR-Sa3_raw.csv"
-# site <- "BR-Sa3"
+# clim_raw <- "data/climate_raw.tsv"
+# sit <- "Tapajos"
 
 # libraries
 library(tidyverse)
 library(vroom)
 
-vroom(clim_raw, na = "-9999") %>% 
-  select(TIMESTAMP_START, TIMESTAMP_END, P_F, SW_IN_F, TA_F, VPD_F, WS_F) %>% 
-  mutate(time = as_datetime(as.character(as.POSIXlt(as.character(TIMESTAMP_START), format = "%Y%m%d%H%M")))) %>% 
-  rename(rainfall = P_F, snet = SW_IN_F, temperature = TA_F, vpd = VPD_F, ws = WS_F) %>% 
-  mutate(vpd = vpd/10) %>% 
+vroom(clim_raw) %>% 
+  filter(site == sit) %>% 
+  filter(variable %in% c("rainfall", "snet", "temperature", "vpd", "ws")) %>% 
+  pivot_wider(names_from = variable, values_from = observed) %>% 
   select(time, rainfall, snet, temperature, vpd, ws) %>% 
   vroom_write(climate)
 

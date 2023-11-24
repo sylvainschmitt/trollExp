@@ -1,5 +1,5 @@
 # data
-sites: ["GF-Guy", "BR-Sa1", "BR-Sa3"]
+sites: ["Paracou", "Tapajos"]
 
 # sim pars
 spinup: 600
@@ -11,5 +11,5 @@ seed: 42 # for the random selection of years
 troll: "singularity/troll.sif"
 
 # tests
-test: false
+test: true
 test_years: 0.1
