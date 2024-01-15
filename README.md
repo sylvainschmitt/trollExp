@@ -1,6 +1,6 @@
 # trollExp - Run a TROLL experiment with phenology
 Sylvain Schmitt -
-Nov 24, 2023
+Jan 15, 2024
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -8,6 +8,7 @@ Nov 24, 2023
   - [Data](#data)
   - [Spin-up](#spin-up)
   - [Run](#run)
+  - [Run 2 (calibration)](#run-2-calibration)
 - [Singularity](#singularity)
 - [Data](#data-1)
 
@@ -90,6 +91,22 @@ Prepare climate data as a TROLL for the run.
   [`run.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/run.R)
 
 Run a TROLL simulation.
+
+## Run 2 (calibration)
+
+### [prepare_run2](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/prepare_run2.py)
+
+- Script:
+  [`prepare_run2.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/prepare_run2.R)
+
+Prepare climate data as a TROLL for the second run of calibration.
+
+### [run2](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/run2.py)
+
+- Script:
+  [`run2.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/run2.R)
+
+Run a second TROLL simulation for calibration.
 
 # Singularity
 

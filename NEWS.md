@@ -1,3 +1,7 @@
+# trollExp - pheno 0.1.0.9021
+
+-   adding calibration of phenology parameters tau and delta
+
 # trollExp - pheno 0.1.0.9020
 
 -   half-hourly climate and new day limits for Tapajos

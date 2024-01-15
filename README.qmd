@@ -99,6 +99,12 @@ Prepare climate data as a TROLL for the run.
 
 Run a TROLL simulation.
 
+### [run2](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/run2.py)
+
+-   Script: [`run2.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/run2.R)
+
+Run a second TROLL simulation for calibration.
+
 # Singularity
 
 The whole workflow currently rely on the [`singularity-troll` image](https://github.com/sylvainschmitt/singularity-troll).

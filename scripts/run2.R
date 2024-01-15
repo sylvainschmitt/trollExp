@@ -56,7 +56,7 @@ n <- as.numeric(nrow(clim))
 if(test)
   n <- round(test_years*365)
 
-spinup <-  load_output(name = site,
+spinup <-  load_output(name = name,
                        path = folderin)
 
 sim <- troll(

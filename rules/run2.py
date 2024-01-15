@@ -1,13 +1,13 @@
-rule run:
+rule run2:
     input:
         "results/run/{site}_climate.tsv",
-        "results/spinup/{site}"
+        "results/run/{site}_{tau}_{delta}"
     output:
-        directory("results/run/{site}_{tau}_{delta}")
+        directory("results/run2/{site}_{tau}_{delta}")
     log:
-        "results/logs/run_{site}_{tau}_{delta}.log"
+        "results/logs/run2_{site}_{tau}_{delta}.log"
     benchmark:
-        "results/benchmarks/run_{site}_{tau}_{delta}.benchmark.txt"
+        "results/benchmarks/run2_{site}_{tau}_{delta}.benchmark.txt"
     singularity:
         config["troll"]
     threads: 1
@@ -19,4 +19,4 @@ rule run:
         test=config["test"],
         test_years=config["test_years"]
     script:
-        "../scripts/run.R"
+        "../scripts/run2.R"
