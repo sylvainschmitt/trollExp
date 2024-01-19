@@ -8,7 +8,8 @@ filein <- snakemake@input[[1]]
 folderin <- snakemake@input[[2]]
 folderout <- snakemake@output[[1]]
 site <- as.character(snakemake@params$site)
-tau <- as.numeric(snakemake@params$tau)
+a0 <- as.numeric(snakemake@params$a0)
+b0 <- as.numeric(snakemake@params$b0)
 delta <- as.numeric(snakemake@params$delta)
 verbose <- snakemake@params$verbose
 test <- snakemake@params$test
@@ -29,7 +30,7 @@ library(rcontroll)
 library(vroom)
 
 # code
-name <- paste0(site, "_", tau, "_", delta)
+name <- paste0(site, "_", a0, "_", b0, "_", delta)
 path <- gsub(name, "", folderout)
 
 data("TROLLv4_species")
@@ -63,7 +64,9 @@ sim <- troll(
   name = name,
   path = path,
   global = update_parameters(spinup, nbiter = n,
-                             pheno_thres = tau, pheno_delta = delta),
+                             pheno_a0 = a0, 
+                             pheno_b0 = b0, 
+                             pheno_delta = delta),
   species = spinup@inputs$species, 
   climate = clim,
   daily = day,

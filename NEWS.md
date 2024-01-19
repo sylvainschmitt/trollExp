@@ -1,3 +1,7 @@
+# trollExp - pheno 0.1.0.9022
+
+-   adding calibration of phenology parameters a0, b0 and delta
+
 # trollExp - pheno 0.1.0.9021
 
 -   adding calibration of phenology parameters tau and delta

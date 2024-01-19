@@ -1,6 +1,7 @@
 # data
 sites: ["Paracou", "Tapajos"]
-tau: 0.2
+a0: 0.2
+b0: 0.02
 delta: 0.2
 
 # sim pars

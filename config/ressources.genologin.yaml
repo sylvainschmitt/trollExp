@@ -40,3 +40,9 @@ run:
   cpus: 1
   time: "96:00:00"
   
+run2:
+  jobname: "run2"
+  mem: "10G"
+  cpus: 1
+  time: "96:00:00"
+  

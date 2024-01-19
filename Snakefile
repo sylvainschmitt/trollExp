@@ -5,9 +5,10 @@ ruleorder: prepare_run > run
 
 rule all:
    input:
-        expand("results/run2/{site}_{tau}_{delta}",
+        expand("results/run2/{site}_{a0}_{b0}_{delta}",
                 site=config["sites"],
-                tau=config["tau"],
+                a0=config["a0"],
+                b0=config["b0"],
                 delta=config["delta"])
                 
 # Rules #
