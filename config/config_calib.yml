@@ -9,6 +9,12 @@ spinup: 600
 verbose: yes
 seed: 42 # for the random selection of years
 
+# final pars
+a0_f: 0.2
+b0_f: 0.015
+delta_f: 0.2
+rep: 10
+
 # singularity
 # troll: "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.3/sylvainschmitt-singularity-troll.latest.sif"
 troll: "singularity/troll.sif"

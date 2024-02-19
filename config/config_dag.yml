@@ -1,13 +1,19 @@
 # data
 sites: ["Paracou", "Tapajos"]
 a0: 0.2
-b0: 0.02
+b0: 0.015
 delta: 0.2
 
 # sim pars
 spinup: 600
 verbose: yes
 seed: 42 # for the random selection of years
+
+# final pars
+a0_f: 0.2
+b0_f: 0.015
+delta_f: 0.2
+rep: 1
 
 # singularity
 # troll: "https://github.com/sylvainschmitt/singularity-troll/releases/download/0.0.3/sylvainschmitt-singularity-troll.latest.sif"

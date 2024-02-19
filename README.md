@@ -1,6 +1,6 @@
 # trollExp - Run a TROLL experiment with phenology
 Sylvain Schmitt -
-Jan 19, 2024
+Feb 19, 2024
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -97,6 +97,14 @@ Run a TROLL simulation.
   [`run2.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/run2.R)
 
 Run a second TROLL simulation for calibration.
+
+### [run3](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/rules/run3.py)
+
+- Script:
+  [`run3.R`](https://github.com/sylvainschmitt/trollExp/blob/pheno-fluxnet/scripts/run3.R)
+
+Run a third TROLL simulation for evaluation with repetitions based on
+best calibrated parameters.
 
 # Singularity
 

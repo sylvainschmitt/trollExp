@@ -1,3 +1,7 @@
+# trollExp - pheno 0.1.0.9023
+
+-   adding repetition of selected calibration for evaluation
+
 # trollExp - pheno 0.1.0.9022
 
 -   adding calibration of phenology parameters a0, b0 and delta
