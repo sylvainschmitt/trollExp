@@ -62,14 +62,17 @@ if(test)
 spinup <-  load_output(name = old_name,
                        path = folderin)
 
+global <- update_parameters(spinup, nbiter = n,
+                            pheno_a0 = a0, 
+                            pheno_b0 = b0, 
+                            pheno_delta = delta)
+seed <- sample.int(.Machine$integer.max, 1)
+global <- mutate(global, value = ifelse(param == "Rseed", seed, value))
+  
 sim <- troll(
   name = new_name,
   path = path,
-  global = update_parameters(spinup, nbiter = n,
-                             pheno_a0 = a0, 
-                             pheno_b0 = b0, 
-                             pheno_delta = delta,
-                             NONRANDOM = 2),
+  global = global,
   species = spinup@inputs$species, 
   climate = clim,
   daily = day,
